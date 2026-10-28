@@ -196,6 +196,9 @@ html.lights-off .beat .label.berry { color: var(--night-berry); }
 .pub .v { color: var(--ink-3); font-size: 0.85rem; margin-top: 4px; overflow-wrap: anywhere; }
 .pub .side { font-size: 0.88rem; color: var(--ink-2); }
 .pub .side small { display: block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--berry); margin-bottom: 4px; }
+/* The two Best Poster Awards hang beside their posters as Fig. 3 and Fig. 4, printed like Fig. 2; the files stay in colour */
+.pub .side .award { margin: 12px 0 0; max-width: 260px; }
+.pub .side .award img { filter: grayscale(1) contrast(1.04); }
 .group-label { margin: 48px 0 14px; }
 
 /* Documentary */
@@ -419,7 +422,7 @@ h1 .line, h1 .line > span, [data-lines] .line, [data-lines] .line > span { displ
       <dl class="facts">
       <div><dt>Group</dt><dd>Neuronal Circuits and Behavior group, led by João Peça, at CNC-UC and CIBB, University of Coimbra.</dd></div>
       <div><dt>Funding</dt><dd>FCT doctoral fellowship. The project is supported by a 2024 Phelan-McDermid Syndrome Foundation Translational Award, whose application I co-wrote as a member of the team.</dd></div>
-      <div><dt>Recognition</dt><dd>Best Poster Awards at the ERA-NET NEURON Midterm Symposium (Berlin, May 2024) and the PMSF International Conference (July 2024).</dd></div>
+      <div><dt>Recognition</dt><dd>Best Poster Awards at the ERA-NET NEURON Midterm Symposium (Berlin, May 2024) and the PMSF International Conference (Bloomington, July 2024).</dd></div>
       </dl>
     </div>
     <div class="aside">
@@ -471,9 +474,14 @@ h1 .line, h1 .line > span, [data-lines] .line, [data-lines] .line > span { displ
         <span class="yr">2024</span>
         <div>
           <div class="t">The hidden player: decoding the non-canonical role of SHANK3 in neurodevelopment</div>
-          <div class="v">Phelan-McDermid Syndrome Foundation International Conference, July 2024</div>
+          <div class="v">Phelan-McDermid Syndrome Foundation International Conference, Bloomington, Minnesota, July 2024</div>
         </div>
-        <div class="side"><small>Best Poster Award</small></div>
+        <div class="side"><small>Best Poster Award</small>
+          <figure class="plate award">
+            <span class="print"><img src="assets/henrique-santos-cnc-best-poster-pmsf-2024.jpg" width="1080" height="1080" alt="Henrique J. Santos holding his Best Poster Award certificate beside his SHANK3 poster at the 2024 Phelan-McDermid Syndrome Foundation International Conference in Bloomington, Minnesota" loading="lazy" decoding="async"></span>
+            <figcaption><b>Fig. 3</b>Henrique J. Santos with the award, Bloomington, July 2024.</figcaption>
+          </figure>
+        </div>
       </li>
       <li class="pub">
         <span class="yr">2024</span>
@@ -481,7 +489,12 @@ h1 .line, h1 .line > span, [data-lines] .line, [data-lines] .line > span { displ
           <div class="t">Beyond the synapse: exploring the non-canonical role of SHANK3 in neurodevelopment</div>
           <div class="v">ERA-NET NEURON Midterm Symposium, JTC 2021, Berlin, May 2024</div>
         </div>
-        <div class="side"><small>Best Poster Award</small></div>
+        <div class="side"><small>Best Poster Award</small>
+          <figure class="plate award">
+            <span class="print"><img src="assets/henrique-santos-cnc-best-poster-eranet-neuron-berlin-2024.jpg" width="800" height="800" alt="Henrique J. Santos holding his Best Poster Award certificate beside his SHANK3 poster at the ERA-NET NEURON Midterm Symposium in Berlin, May 2024" loading="lazy" decoding="async"></span>
+            <figcaption><b>Fig. 4</b>Henrique J. Santos with the award, Berlin, May 2024.</figcaption>
+          </figure>
+        </div>
       </li>
     </ol>
   </section>
@@ -594,6 +607,7 @@ h1 .line, h1 .line > span, [data-lines] .line, [data-lines] .line > span { displ
     "https://www.researchgate.net/profile/Henrique-Santos-49",
     "https://www.wikidata.org/wiki/Q141901205"
   ],
+  "award": ["Best Poster Award, ERA-NET NEURON Midterm Symposium (JTC 2021), Berlin, 2024", "Best Poster Award, Phelan-McDermid Syndrome Foundation International Conference, Bloomington, 2024"],
   "knowsAbout": ["Neuroscience", "Neurodevelopment", "SHANK3", "Brain organoids", "Induced pluripotent stem cells", "NeuroAI"]
 }
 </script>
