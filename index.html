@@ -1,0 +1,1255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Henrique J. Santos</title>
+<meta name="description" content="Henrique J. Santos, doctoral researcher in neuroscience at the University of Coimbra. The functions of SHANK3 before the first synapse forms, in human stem cells and brain organoids.">
+<link rel="canonical" href="https://hsscodes.github.io/">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Henrique J. Santos">
+<meta property="og:description" content="Henrique J. Santos, doctoral researcher in neuroscience at the University of Coimbra. The functions of SHANK3 before the first synapse forms, in human stem cells and brain organoids.">
+<meta property="og:url" content="https://hsscodes.github.io/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#EFEEEA">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23EFEEEA'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='%239B1E58'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap">
+<style>
+/* Layout: a gallery page. Stone walls, an editorial serif, and one object on show: the neuron, fixed behind the text and turning to face each chapter. For the nucleus the lights go down, as at the microscope. */
+:root {
+  color-scheme: light;
+  --paper: #EFEEEA;
+  --sheet: #F7F6F3;
+  --ink: #161615;
+  --ink-2: #57564F;
+  --ink-3: #8C8A82;
+  --line: #D2CFC7;
+  --chalk: #1E1D1B;
+  --berry: #9B1E58;
+  --night: #07090B;
+  --night-text: #F1EFE9;
+  --night-text-2: #C6C3BB;
+  --night-berry: #FF7AAE;
+  --display: "Newsreader", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --sans: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 30; background: var(--paper);
+}
+a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+a:hover { color: var(--berry); text-decoration-color: var(--berry); }
+:focus-visible { outline: 2px solid var(--berry); outline-offset: 3px; border-radius: 2px; }
+::selection { background: rgba(155, 30, 88, 0.16); }
+
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
+main, footer, .top { position: relative; z-index: 2; }
+.wrap { max-width: 1240px; margin-inline: auto; }
+
+.label {
+  font-family: var(--sans); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-3); margin: 0 0 22px;
+}
+.label.berry { color: var(--berry); }
+
+/* Top bar */
+.top {
+  position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 20;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: rgba(239, 238, 234, 0.82);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .8s ease, background-color .8s ease;
+}
+.top.scrolled { border-bottom-color: var(--line); }
+.top .wrap { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-block: 16px; }
+.brand { font-family: var(--display); font-size: 1.15rem; text-decoration: none; letter-spacing: -0.005em; transition: color .8s ease; }
+.brand em { font-style: italic; }
+.top nav { display: flex; gap: 26px; font-size: 0.85rem; }
+.top nav a { text-decoration: none; color: var(--ink-2); transition: color .8s ease; }
+.top nav a:hover, .top nav a.on { color: var(--ink); }
+
+/* Hero */
+.hero { min-height: min(100svh, 940px); display: grid; align-content: end; padding-block: 130px 64px; position: relative; cursor: grab; }
+.hero.dragging { cursor: grabbing; }
+.hero-text { max-width: 680px; }
+h1 {
+  font-family: var(--display); font-weight: 300; font-optical-sizing: auto;
+  font-size: clamp(3.3rem, 8.4vw, 8.2rem); line-height: 0.92; letter-spacing: -0.025em;
+  margin: 0 0 34px; text-wrap: balance;
+}
+h1 em { font-style: italic; font-weight: 300; }
+.thesis {
+  font-family: var(--display); font-weight: 300; font-size: clamp(1.35rem, 2.2vw, 1.85rem); line-height: 1.3;
+  margin: 0 0 22px; max-width: 28ch; text-wrap: balance;
+}
+.thesis em { color: var(--berry); }
+.intro { color: var(--ink-2); max-width: 46ch; margin: 0 0 28px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; font-size: 0.92rem; }
+.pill {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer;
+  font: inherit; font-weight: 500; color: var(--paper); background: var(--ink);
+  padding: 12px 22px; border-radius: 999px; border: 1px solid var(--ink);
+  transition: background .25s, color .25s;
+}
+.pill:hover { background: var(--berry); border-color: var(--berry); color: #fff; }
+.textlink { font-weight: 500; text-decoration: underline; text-decoration-color: var(--line); }
+.figcap {
+  position: absolute; right: 0; bottom: 64px; max-width: 280px;
+  font-size: 0.8rem; line-height: 1.5; color: var(--ink-2);
+  border-top: 1px solid var(--ink); padding: 11px 12px 12px; margin: 0;
+  background-color: rgba(239, 238, 234, 0.86);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.figcap b { font-weight: 600; color: var(--ink); margin-right: 6px; }
+
+/* Chapters */
+.chapter { padding-block: clamp(96px, 16vh, 180px) 24px; }
+h2 {
+  font-family: var(--display); font-weight: 300; font-size: clamp(2.3rem, 5vw, 4.4rem);
+  line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 24px; max-width: 15ch; text-wrap: balance;
+}
+h3 { font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.2rem); line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 16px; text-wrap: balance; }
+.lede { font-family: var(--display); font-weight: 300; font-size: clamp(1.15rem, 1.8vw, 1.45rem); line-height: 1.45; color: var(--ink-2); max-width: 40ch; margin: 0; }
+
+/* Story beats: the scene behind changes as each one reaches the middle of the screen */
+.beat { min-height: 96vh; display: grid; align-items: center; padding-block: 48px; }
+.statement { max-width: 480px; }
+.statement h3, .statement p, .statement .label { transition: color .8s ease, border-color .8s ease; }
+.statement p { margin: 0 0 14px; color: var(--ink-2); }
+.statement .note { font-size: 0.85rem; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 12px; margin-top: 22px; }
+html.lights-off .top { background: rgba(7, 9, 11, 0.55); border-bottom-color: rgba(255, 255, 255, 0.08); }
+html.lights-off .brand, html.lights-off .top nav a { color: var(--night-text); }
+html.lights-off .beat .statement h3 { color: var(--night-text); }
+html.lights-off .beat .statement p { color: var(--night-text-2); }
+html.lights-off .beat .statement .label { color: #9C9A92; }
+html.lights-off .beat .statement .note { color: #9C9A92; border-top-color: rgba(255, 255, 255, 0.16); }
+html.lights-off .beat .label.berry { color: var(--night-berry); }
+
+/* Development, drawn in chalk */
+.dev-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 64px; align-items: end; margin-bottom: 44px; }
+.dev-head h2 { margin: 0; }
+.dev-head p { margin: 0; color: var(--ink-2); max-width: 46ch; }
+.track { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+.track li { min-width: 0; border-top: 1px solid var(--ink); padding-top: 14px; }
+.track li.mine { border-top-color: var(--berry); }
+.chalk { display: block; width: 100%; aspect-ratio: 4 / 3; max-width: 100%; margin-bottom: 14px; }
+.track b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.3rem; line-height: 1.2; margin-bottom: 6px; }
+.track span { display: block; color: var(--ink-2); font-size: 0.95rem; line-height: 1.5; }
+.track .who { margin: 12px 0 0; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.track .mine .who { color: var(--berry); }
+
+/* In the lab */
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin: 0; }
+.facts div { border-top: 1px solid var(--ink); padding-top: 14px; min-width: 0; }
+.facts dt { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+.facts dd { margin: 0; color: var(--ink-2); }
+.aside { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 16px 64px; align-items: start; border-top: 1px solid var(--line); padding-top: 34px; margin-top: 72px; }
+.aside h3 { margin: 0; }
+.aside > p { margin: 0; color: var(--ink-2); font-family: var(--display); font-size: 1.25rem; line-height: 1.5; }
+
+/* Publications */
+.pubs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.pub { display: grid; grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 14rem); gap: 12px 28px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+.yr { font-family: var(--display); font-style: italic; font-size: 1.1rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pub .t { font-family: var(--display); font-weight: 400; font-size: clamp(1.15rem, 1.9vw, 1.45rem); line-height: 1.3; letter-spacing: -0.005em; }
+.pub .t a { text-decoration: none; }
+.pub .t a:hover { color: var(--berry); }
+.pub .a { color: var(--ink-2); font-size: 0.92rem; margin-top: 8px; }
+.pub .a b { color: var(--ink); font-weight: 600; }
+.pub .v { color: var(--ink-3); font-size: 0.85rem; margin-top: 4px; overflow-wrap: anywhere; }
+.pub .side { font-size: 0.88rem; color: var(--ink-2); }
+.pub .side small { display: block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--berry); margin-bottom: 4px; }
+.group-label { margin: 48px 0 14px; }
+
+/* Documentary */
+.film { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; border-top: 1px solid var(--ink); padding-top: 34px; }
+.film .title { font-family: var(--display); font-weight: 300; font-style: italic; font-size: clamp(2.2rem, 5.6vw, 4.8rem); line-height: 0.98; letter-spacing: -0.02em; margin: 0; }
+.film .sub { margin: 16px 0 0; color: var(--ink-2); font-size: 0.92rem; }
+.film p { margin: 0; color: var(--ink-2); }
+.status { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 14px; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--berry); }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--berry); }
+
+/* After hours */
+.projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 56px; margin-top: 40px; }
+.project { border-top: 1px solid var(--ink); padding-top: 22px; min-width: 0; }
+.project h3 { margin-bottom: 8px; }
+.project .tagline { font-family: var(--display); font-style: italic; font-weight: 300; font-size: 1.3rem; line-height: 1.4; margin: 0 0 18px; }
+.project p { margin: 0 0 14px; color: var(--ink-2); }
+.project dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 18px; margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.88rem; }
+.project dt { color: var(--ink-3); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding-top: 0.25em; }
+.project dd { margin: 0; color: var(--ink); }
+.more { margin-top: 36px; font-size: 0.92rem; color: var(--ink-2); }
+
+/* Education and contact */
+.edu-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 24px 64px; align-items: start; }
+.edu { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.edu li { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.edu b { font-family: var(--display); font-weight: 400; font-size: 1.2rem; }
+.edu .d { color: var(--ink-2); font-size: 0.95rem; margin-top: 2px; }
+.contact .mail { font-family: var(--display); font-weight: 300; font-size: clamp(1.7rem, 5.4vw, 4.6rem); letter-spacing: -0.02em; line-height: 1.05; margin: 10px 0 26px; overflow-wrap: anywhere; user-select: all; }
+.links { list-style: none; margin: 34px 0 0; padding: 18px 0 0; display: flex; flex-wrap: wrap; gap: 10px 30px; border-top: 1px solid var(--ink); font-size: 0.95rem; }
+.links a { text-decoration: none; }
+.links a:hover { color: var(--berry); }
+footer { padding-block: 90px 46px; color: var(--ink-3); font-size: 0.82rem; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; border-top: 1px solid var(--line); padding-top: 20px; }
+footer a { text-decoration: none; }
+
+/* Paper and chalk. The grain sits above the 3D scene and below the text; the chalk textures are drawn by the script below. */
+.grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: var(--paper-grain, none); background-size: 240px 240px; transition: opacity .8s ease; }
+html.lights-off .grain { opacity: 0; }
+html.chalked .track li, html.chalked .facts div, html.chalked .pubs, html.chalked .film,
+html.chalked .project, html.chalked .edu, html.chalked .links, html.chalked .figcap {
+  border-top-color: transparent;
+  background-image: var(--rule-ink);
+  background-repeat: repeat-x;
+  background-size: 480px 6px;
+  background-origin: border-box;
+  background-position: 0 -2px;
+}
+html.chalked .track li.mine { background-image: var(--rule-berry); }
+html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; background: var(--dot-berry) center / 11px 11px no-repeat; }
+@media (min-width: 981px) {
+  .track li { position: relative; }
+  html.chalked .track li:not(:last-child)::after {
+    content: ""; position: absolute; top: -6px; right: -21px; width: 14px; height: 12px;
+    background: var(--arrow-ink) center / 14px 12px no-repeat;
+  }
+}
+
+@media (max-width: 980px) {
+  .film, .edu-grid, .dev-head, .aside { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: 1fr; gap: 20px; }
+  .pub { grid-template-columns: 5rem minmax(0, 1fr); }
+  .pub .side { grid-column: 2; }
+  .figcap { position: static; margin-top: 40px; max-width: 320px; }
+  .track { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+}
+@media (max-width: 720px) {
+  .top nav { display: none; }
+  .hero { min-height: 92svh; padding-top: 52svh; }
+  .beat { min-height: 0; padding-top: 58vh; padding-top: 58svh; padding-bottom: 40px; align-items: end; }
+  .statement { background: rgba(239, 238, 234, 0.9); padding: 18px 18px 6px; margin-inline: -6px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background-color .8s ease; }
+  html.lights-off .beat .statement { background: rgba(7, 9, 11, 0.72); }
+  /* On a phone the chapters are sheets of paper that slide over the neuron, so text never sits on top of it */
+  .chapter { position: relative; }
+  .hero::before, .chapter::before {
+    content: ""; position: absolute; z-index: -1; bottom: -56px;
+    left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    background-color: var(--paper); background-image: var(--paper-grain, none); background-size: 240px 240px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 56px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 56px), transparent 100%);
+  }
+  .hero::before { top: calc(52vh - 110px); top: calc(52svh - 110px); }
+  .chapter::before { top: -32px; }
+  .hero + .chapter::before, .chapter + .chapter::before {
+    top: -64px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 56px), transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 56px), transparent 100%);
+  }
+  .projects { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .track { grid-template-columns: 1fr; }
+  .pub, .edu li { grid-template-columns: 1fr; gap: 4px; }
+  .pub .side { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .top, .brand, .top nav a, .statement h3, .statement p, .statement .label, .grain { transition: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top" id="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">Henrique <em>J.</em> Santos</a>
+    <nav aria-label="Main">
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#after-hours">After hours</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap" id="top" data-scene="hero" aria-labelledby="name">
+    <div class="hero-text">
+      <p class="label">Neuroscience · University of Coimbra</p>
+      <h1 id="name">Henrique <em>J.</em> Santos</h1>
+      <p class="thesis">SHANK3 is best known for its role at the synapse. My research examines <em>its functions before the first synapse forms.</em></p>
+      <p class="intro">Doctoral researcher at the Center for Neuroscience and Cell Biology, University of Coimbra, working with human induced pluripotent stem cells and brain organoids.</p>
+      <div class="actions">
+        <a class="pill" href="#research">Explore the research</a>
+        <a class="textlink" href="#contact">Contact</a>
+      </div>
+    </div>
+    <p class="figcap"><b>Fig. 1</b><span id="neuron-label">A neuron, rendered in your browser.</span> Drag to rotate.</p>
+  </section>
+
+  <section class="chapter wrap" id="research" data-scene="hero" aria-labelledby="research-h">
+    <p class="label">Research</p>
+    <h2 id="research-h">SHANK3, before the synapse</h2>
+    <p class="lede">Scroll to follow SHANK3 from the synapse, where it is usually studied, to the nucleolus, where my work begins.</p>
+  </section>
+
+  <section class="beat wrap" data-scene="synapse" aria-label="The established view">
+    <div class="statement">
+      <p class="label">The established view</p>
+      <h3>At the synapse</h3>
+      <p>SHANK3 is one of the best-established autism genes, and its haploinsufficiency is considered the main cause of the neurological features of Phelan-McDermid syndrome.</p>
+      <p>Most of what is known about it comes from the synapse, where it scaffolds the postsynaptic density and anchors receptor complexes.</p>
+      <p class="note">In Fig. 1, the berry points along the dendrites represent synapses.</p>
+    </div>
+  </section>
+
+  <section class="beat wrap night" data-scene="nucleus" aria-label="My focus">
+    <div class="statement">
+      <p class="label berry">My focus</p>
+      <h3>In the nucleolus, before any synapse</h3>
+      <p>My work looks earlier in development, in human induced pluripotent stem cells, neural progenitors and brain organoids. In these cells, SHANK3 is enriched in the nucleolus, where it regulates SOX2 expression and the pace of proliferation and differentiation.</p>
+      <p>SHANK3 insufficiency may therefore disturb development before a single synapse has formed.</p>
+      <p class="note">Illustration. SHANK3 (red) concentrates in the nucleolus, ringed by nucleolin (green), inside a nucleus stained with Hoechst (blue).</p>
+    </div>
+  </section>
+
+  <section class="chapter wrap" data-scene="far" aria-labelledby="dev-h">
+    <div class="dev-head">
+      <div>
+        <p class="label">Development</p>
+        <h2 id="dev-h">From stem cell to synapse</h2>
+      </div>
+      <p>Four stages of neural development. Berry marks SHANK3 in the nucleolus of stem cells and progenitors, the focus of my work, and at the postsynaptic density, where it is usually studied.</p>
+    </div>
+    <ol class="track">
+      <li class="mine"><canvas class="chalk" data-draw="stem" role="img" aria-label="Chalk drawing of a stem cell in a colony, with a large nucleus and a berry nucleolus"></canvas><b>Stem cell</b><span>SHANK3 is enriched in the nucleolus.</span><p class="who">My focus</p></li>
+      <li class="mine"><canvas class="chalk" data-draw="progenitor" role="img" aria-label="Chalk drawing of a neural rosette: progenitors arranged radially around a small lumen, each nucleus with a berry nucleolus"></canvas><b>Neural progenitor</b><span>SHANK3 regulates SOX2 expression and the pace of proliferation and differentiation.</span><p class="who">My focus</p></li>
+      <li><canvas class="chalk" data-draw="neuron" role="img" aria-label="Chalk drawing of a young neuron with short dendrites and an axon ending in a growth cone"></canvas><b>Young neuron</b><span>Neurites extend and seek their partners.</span></li>
+      <li><canvas class="chalk" data-draw="synapse" role="img" aria-label="Chalk drawing of a synapse: a presynaptic bouton with vesicles above a dendritic spine whose postsynaptic density is marked in berry"></canvas><b>Synapse</b><span>SHANK3 scaffolds the postsynaptic density.</span><p class="who">The established view</p></li>
+    </ol>
+  </section>
+
+  <section class="chapter wrap" data-scene="far" aria-labelledby="lab-h">
+    <p class="label" id="lab-h">In the lab</p>
+    <dl class="facts">
+      <div><dt>Group</dt><dd>Neuronal Circuits and Behavior group, led by João Peça, at CNC-UC and CIBB, University of Coimbra.</dd></div>
+      <div><dt>Funding</dt><dd>FCT doctoral fellowship. The project is supported by a 2024 Phelan-McDermid Syndrome Foundation Translational Award, whose application I co-wrote as a member of the team.</dd></div>
+      <div><dt>Recognition</dt><dd>Best Poster Awards at the ERA-NET NEURON Midterm Symposium (Berlin, May 2024) and the PMSF International Conference (July 2024).</dd></div>
+    </dl>
+    <div class="aside">
+      <div>
+        <p class="label">Also exploring</p>
+        <h3>Neuroscience and artificial intelligence</h3>
+      </div>
+      <p>Alongside this work, I am interested in the interface between neuroscience and artificial intelligence, in particular whether memory consolidation inspired by sleep and the hippocampus can help language models retain new facts and combine facts learned separately.</p>
+    </div>
+  </section>
+
+  <section class="chapter wrap" id="publications" data-scene="far" aria-labelledby="pubs-h">
+    <p class="label">Publications</p>
+    <h2 id="pubs-h">Papers, thesis and posters</h2>
+    <ol class="pubs">
+      <li class="pub">
+        <span class="yr">2026</span>
+        <div>
+          <div class="t"><a href="https://doi.org/10.1111/jnc.70388">CASPR2 autoimmune antibodies induce neuronal hyperactivity in human brain organoids</a></div>
+          <div class="a">Oliveira AR, Cammarata G, Seabra C, Cardoso AM, <b>Santos HJ</b>, Guedes J, et al., Peça J</div>
+          <div class="v">Journal of Neurochemistry 170(2): e70388</div>
+        </div>
+        <div class="side"><small>Contribution</small>I contributed to the investigation and methodology.</div>
+      </li>
+      <li class="pub">
+        <span class="yr">2025</span>
+        <div>
+          <div class="t"><a href="https://doi.org/10.1016/j.isci.2025.113401">Mesenchymal stromal cell secretome-induced synaptogenesis is mediated by thrombospondin-1</a></div>
+          <div class="a">Tomé D, Martins LF, Aroso M, <b>Santos H</b>, Costa RO, et al., Almeida RD</div>
+          <div class="v">iScience 28(9): 113401</div>
+        </div>
+        <div class="side"><small>Contribution</small>I generated the human cortical brain organoids.</div>
+      </li>
+    </ol>
+    <p class="label group-label">Thesis</p>
+    <ol class="pubs">
+      <li class="pub">
+        <span class="yr">2023</span>
+        <div>
+          <div class="t"><a href="https://hdl.handle.net/10316/110275">The hidden player: non-canonical role of SHANK3 in neurodevelopment</a></div>
+          <div class="a">MSc thesis, University of Coimbra. Supervised by Ana Cardoso and João Peça.</div>
+        </div>
+        <div class="side">Full text under embargo until 2029.</div>
+      </li>
+    </ol>
+    <p class="label group-label">Posters</p>
+    <ol class="pubs">
+      <li class="pub">
+        <span class="yr">2024</span>
+        <div>
+          <div class="t">The hidden player: decoding the non-canonical role of SHANK3 in neurodevelopment</div>
+          <div class="v">Phelan-McDermid Syndrome Foundation International Conference, July 2024</div>
+        </div>
+        <div class="side"><small>Best Poster Award</small></div>
+      </li>
+      <li class="pub">
+        <span class="yr">2024</span>
+        <div>
+          <div class="t">Beyond the synapse: exploring the non-canonical role of SHANK3 in neurodevelopment</div>
+          <div class="v">ERA-NET NEURON Midterm Symposium, JTC 2021, Berlin, May 2024</div>
+        </div>
+        <div class="side"><small>Best Poster Award</small></div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="chapter wrap" id="outreach" data-scene="far" aria-labelledby="film-h">
+    <p class="label">Outreach</p>
+    <div class="film">
+      <div>
+        <p class="title" id="film-h">Era Uma Vez um Organoide</p>
+        <p class="sub">A Jornada de B3 · Once upon an organoid: B3's journey</p>
+      </div>
+      <div>
+        <p class="status">In production</p>
+        <p>A documentary for a general audience about human brain organoids, following the journey of B3. I coordinate this ongoing project, which is funded by the University of Coimbra through its 2026 programme for the promotion of scientific culture (PCC).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter wrap" id="after-hours" data-scene="after" aria-labelledby="after-h">
+    <p class="label">After hours</p>
+    <h2 id="after-h">Software I build</h2>
+    <p class="lede">Outside the laboratory I write software, from tools for the bench to a revival of a chat client from 2009.</p>
+    <div class="projects">
+      <article class="project" aria-labelledby="ef-h">
+        <p class="label">Laboratory software</p>
+        <h3 id="ef-h">Expression Factory</h3>
+        <p class="tagline">RT-qPCR, from plate to figure. Ct values you can check, and nothing hidden.</p>
+        <p>A desktop application for RT-qPCR, used in my laboratory. It covers the whole experiment: plate layout, pipetting and master-mix sheets, import of the instrument run, analysis and figures.</p>
+        <p>Its engine calls Ct values that match the instrument software to the last digit, and every excluded well or correction stays visible. It also designs primers, maintains the lab's shared primer library and tracks cell cultures from thaw to cDNA.</p>
+        <dl>
+          <dt>Status</dt><dd>In use in my lab, not yet public</dd>
+          <dt>Built with</dt><dd>Rust and React, during my PhD</dd>
+        </dl>
+      </article>
+      <article class="project" aria-labelledby="relive-h">
+        <p class="label">Side project</p>
+        <h3 id="relive-h">reLive</h3>
+        <p class="tagline">Windows Live Messenger, running again.</p>
+        <p>In my spare time I am rebuilding Windows Live Messenger. My server implements the original MSNP protocol, and the web and Android clients preserve the glossy 2009 interface, with nudges, scenes, group chats, and voice and video calls.</p>
+        <p>Most of the work lies in reverse-engineering an undocumented protocol. Signing in and hearing that sound again never gets old.</p>
+        <dl>
+          <dt>Status</dt><dd>Online</dd>
+          <dt>Built with</dt><dd>Rust, on the open-source Escargot server</dd>
+          <dt>Visit</dt><dd><a href="https://relivemsgr.com">relivemsgr.com</a></dd>
+        </dl>
+      </article>
+    </div>
+    <p class="more">Smaller projects are on <a href="https://github.com/HSScodes">GitHub</a>.</p>
+  </section>
+
+  <section class="chapter wrap" id="education" data-scene="far" aria-labelledby="edu-h">
+    <div class="edu-grid">
+      <div>
+        <p class="label">Education</p>
+        <h2 id="edu-h">University of Coimbra</h2>
+      </div>
+      <ol class="edu">
+        <li><span class="yr">2024 to present</span><div><b>PhD in Biosciences, Neurosciences</b><div class="d">FCT doctoral fellowship.</div></div></li>
+        <li><span class="yr">2021 to 2023</span><div><b>MSc in Cellular and Molecular Biology, Neurobiology</b><div class="d">Final grade 18/20. Merit board, top 5% of students in 2022/23.</div></div></li>
+        <li><span class="yr">2021</span><div><b>BSc in Biology, minor in Biochemistry</b></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="chapter wrap contact" id="contact" data-scene="end" aria-labelledby="contact-h">
+    <p class="label">Contact</p>
+    <h2 id="contact-h">Get in touch</h2>
+    <p class="lede">Email is the best way to reach me.</p>
+    <p class="mail" id="mail-addr">hsantos@cnc.uc.pt</p>
+    <button class="pill" type="button" id="copy-mail">Copy email</button>
+    <ul class="links">
+      <li><a href="https://scholar.google.com/citations?user=NweJgt8AAAAJ">Google Scholar</a></li>
+      <li><a href="https://orcid.org/0009-0006-7108-125X">ORCID</a></li>
+      <li><a href="https://www.cienciavitae.pt/8417-3BB8-5036">CiênciaVitae</a></li>
+      <li><a href="https://www.linkedin.com/in/henrique-j-santos">LinkedIn</a></li>
+      <li><a href="https://github.com/HSScodes">GitHub</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Henrique J. Santos · Coimbra · 2026</span>
+    <a href="#top">Back to top</a>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Henrique J. Santos",
+  "alternateName": ["Henrique José Silva Santos", "Henrique Santos"],
+  "jobTitle": "Doctoral Researcher",
+  "affiliation": { "@type": "Organization", "name": "Center for Neuroscience and Cell Biology (CNC-UC), University of Coimbra", "url": "https://www.cnc.uc.pt/" },
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "University of Coimbra" },
+  "url": "https://hsscodes.github.io/",
+  "identifier": { "@type": "PropertyValue", "propertyID": "ORCID", "value": "0009-0006-7108-125X" },
+  "sameAs": [
+    "https://scholar.google.com/citations?user=NweJgt8AAAAJ",
+    "https://orcid.org/0009-0006-7108-125X",
+    "https://www.cienciavitae.pt/8417-3BB8-5036",
+    "https://www.linkedin.com/in/henrique-j-santos",
+    "https://github.com/HSScodes"
+  ],
+  "knowsAbout": ["Neuroscience", "Neurodevelopment", "SHANK3", "Brain organoids", "Induced pluripotent stem cells", "NeuroAI"]
+}
+</script>
+
+<!-- Page interactions that do not need WebGL -->
+<script>
+(function () {
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  /* Top bar rule and active link */
+  var topbar = document.getElementById("topbar");
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".top nav a"));
+  function onScroll() {
+    topbar.classList.toggle("scrolled", window.scrollY > 20);
+    var mid = window.innerHeight * 0.4, current = null;
+    navLinks.forEach(function (a) {
+      var el = document.querySelector(a.getAttribute("href"));
+      if (el && el.getBoundingClientRect().top < mid) current = a;
+    });
+    navLinks.forEach(function (a) { a.classList.toggle("on", a === current); });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* Copy email */
+  var copyBtn = document.getElementById("copy-mail");
+  var addr = document.getElementById("mail-addr");
+  copyBtn.addEventListener("click", function () {
+    var text = addr.textContent.trim();
+    function reset() { setTimeout(function () { copyBtn.textContent = "Copy email"; }, 1800); }
+    function selectIt() {
+      var range = document.createRange(); range.selectNodeContents(addr);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      copyBtn.textContent = "Selected"; reset();
+    }
+    try { navigator.clipboard.writeText(text).then(function () { copyBtn.textContent = "Copied"; reset(); }, selectIt); }
+    catch (e) { selectIt(); }
+  });
+
+  var DPR = Math.max(2, Math.min(3, window.devicePixelRatio || 1));
+
+  /* Chalk. It deposits only on the raised grain of the paper, so light pressure leaves broken, grainy marks. */
+  function tooth(x, y) {
+    var h = (Math.imul(Math.floor(x * 0.9), 374761393) + Math.imul(Math.floor(y * 0.9), 668265263)) | 0;
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    h ^= h >>> 16;
+    return (h >>> 0) / 4294967296;
+  }
+  function pen(ctx, R, gauge) {
+    function deposit(x, y, pressure, color) {
+      if (tooth(x, y) > pressure) return;
+      var s = 0.5 + R() * 0.85;
+      ctx.globalAlpha = (0.3 + 0.7 * Math.min(1, pressure)) * (0.5 + R() * 0.5);
+      ctx.fillStyle = color;
+      ctx.fillRect(x - s / 2, y - s / 2, s, s);
+    }
+    function line(pts, width, pressure, color) {
+      var total = 0, i;
+      for (i = 1; i < pts.length; i++) total += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+      if (!total) return;
+      var acc = 0, ph = R() * 6.283, ph2 = R() * 6.283, w = width * gauge;
+      for (i = 1; i < pts.length; i++) {
+        var a = pts[i - 1], b = pts[i], L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        if (!L) continue;
+        var nx = -(b[1] - a[1]) / L, ny = (b[0] - a[0]) / L, n = Math.ceil(L / 0.35);
+        for (var j = 0; j < n; j++) {
+          var arc = acc + L * j / n;
+          var ends = Math.min(1, arc / 14 + 0.35, (total - arc) / 14 + 0.35);
+          var p = pressure * (0.84 + 0.16 * Math.sin(arc * 0.045 + ph)) * (0.9 + 0.1 * Math.sin(arc * 0.21 + ph2)) * ends;
+          var x = a[0] + (b[0] - a[0]) * j / n, y = a[1] + (b[1] - a[1]) * j / n;
+          var k = Math.max(2, Math.round(w * 1.5));
+          for (var q = 0; q < k; q++) {
+            var off = (R() + R() - 1) * w * 0.55;
+            deposit(x + nx * off + (R() - 0.5) * 0.5, y + ny * off + (R() - 0.5) * 0.5, p * (1 - 0.4 * Math.abs(off) / (w * 0.55 + 0.01)), color);
+          }
+        }
+        acc += L;
+      }
+    }
+    function curve(pts, steps) {
+      var out = [];
+      for (var i = 0; i < pts.length - 1; i++) {
+        var p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+        for (var s = 0; s < steps; s++) {
+          var t = s / steps, t2 = t * t, t3 = t2 * t;
+          out.push([
+            0.5 * (2 * p1[0] + (-p0[0] + p2[0]) * t + (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 + (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3),
+            0.5 * (2 * p1[1] + (-p0[1] + p2[1]) * t + (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 + (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3)
+          ]);
+        }
+      }
+      out.push(pts[pts.length - 1]);
+      return out;
+    }
+    function oval(cx, cy, rx, ry, rot, a0, a1, wobble) {
+      var pts = [], n = Math.max(24, Math.round((rx + ry) * Math.abs(a1 - a0) / 2)), ph = R() * 6.283, ph2 = R() * 6.283;
+      for (var i = 0; i <= n; i++) {
+        var th = a0 + (a1 - a0) * i / n, f = 1 + wobble * Math.sin(3 * th + ph) + wobble * 0.5 * Math.sin(7 * th + ph2);
+        var x = Math.cos(th) * rx * f, y = Math.sin(th) * ry * f;
+        pts.push([cx + x * Math.cos(rot) - y * Math.sin(rot), cy + x * Math.sin(rot) + y * Math.cos(rot)]);
+      }
+      return pts;
+    }
+    /* An outline drawn as a hand draws it: one firm pass, then a lighter one that does not quite meet it */
+    function ring(cx, cy, rx, ry, rot, width, pressure, color, a0, a1) {
+      var full = a0 === undefined;
+      var s0 = full ? R() * 6.283 : a0, s1 = full ? s0 + 6.283 + 0.25 : a1;
+      line(oval(cx, cy, rx, ry, rot, s0, s1, 0.025), width, pressure, color);
+      var d = 0.012 + R() * 0.012;
+      line(oval(cx + (R() - 0.5) * 1.2, cy + (R() - 0.5) * 1.2, rx * (1 + d), ry * (1 - d * 0.6), rot + 0.03, s0 + 0.6, s0 + (s1 - s0) * 0.7, 0.03), width * 0.6, pressure * 0.45, color);
+    }
+    /* Shading with the side of the chalk: parallel strokes across the shape */
+    function rub(cx, cy, rx, ry, rot, pressure, color, angle, lane) {
+      var gap = lane || 1.7, ca = Math.cos(angle), sa = Math.sin(angle), cr = Math.cos(-rot), sr = Math.sin(-rot), ext = Math.max(rx, ry) * 1.05;
+      for (var d = -ext; d <= ext; d += gap) {
+        var lp = 0.75 + 0.25 * Math.sin(d * 0.9 + rx);
+        for (var t = -ext; t <= ext; t += 0.55) {
+          var x = cx - d * sa + t * ca, y = cy + d * ca + t * sa;
+          var dx = x - cx, dy = y - cy, lx = dx * cr - dy * sr, ly = dx * sr + dy * cr;
+          var e = (lx * lx) / (rx * rx) + (ly * ly) / (ry * ry);
+          if (e > 1) continue;
+          deposit(x + (R() - 0.5) * 0.9, y + (R() - 0.5) * 0.9, pressure * lp * (1 - 0.45 * e), color);
+        }
+      }
+    }
+    return { R: R, deposit: deposit, line: line, curve: curve, ring: ring, rub: rub };
+  }
+  function surface(w, h) {
+    var c = document.createElement("canvas");
+    c.width = Math.round(w * DPR); c.height = Math.round(h * DPR);
+    var ctx = c.getContext("2d");
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    return { canvas: c, ctx: ctx };
+  }
+
+  /* Paper grain, chalk rules and a chalk dot for the rest of the page */
+  function paperGrain() {
+    var size = 240, s = surface(size, size), R = rng(7), ctx = s.ctx, i;
+    for (i = 0; i < 5600; i++) {
+      var light = R() < 0.16, d = 0.45 + R() * 0.9;
+      ctx.fillStyle = light ? "#FFFFFF" : "#3B3427";
+      ctx.globalAlpha = light ? 0.08 + R() * 0.08 : 0.018 + R() * 0.045;
+      ctx.fillRect(R() * size, R() * size, d, d);
+    }
+    ctx.strokeStyle = "#3B3427"; ctx.lineWidth = 0.5;
+    for (i = 0; i < 24; i++) {
+      var x0 = R() * size, y0 = R() * size, a = R() * 6.283, L = 6 + R() * 18, al = 0.03 + R() * 0.03;
+      for (var ox = -size; ox <= size; ox += size) for (var oy = -size; oy <= size; oy += size) {
+        ctx.globalAlpha = al;
+        ctx.beginPath();
+        ctx.moveTo(x0 + ox, y0 + oy);
+        ctx.quadraticCurveTo(x0 + ox + Math.cos(a + 0.5) * L * 0.5, y0 + oy + Math.sin(a + 0.5) * L * 0.5, x0 + ox + Math.cos(a) * L, y0 + oy + Math.sin(a) * L);
+        ctx.stroke();
+      }
+    }
+    return s.canvas.toDataURL("image/png");
+  }
+  function chalkRule(color, width, pressure, seed) {
+    var w = 480, h = 6, s = surface(w, h), P = pen(s.ctx, rng(seed), 1), R = P.R;
+    for (var x = 0; x < w; x += 0.35) {
+      var t = (x / w) * 6.283;
+      var y0 = h / 2 + 0.3 * Math.sin(2 * t) + 0.18 * Math.sin(5 * t + 1);
+      var p = pressure * (0.84 + 0.16 * Math.sin(3 * t + 0.5)) * (0.92 + 0.08 * Math.sin(11 * t));
+      for (var q = 0; q < Math.max(2, Math.round(width * 1.5)); q++) {
+        var off = (R() + R() - 1) * width * 0.55;
+        P.deposit(x + (R() - 0.5) * 0.5, y0 + off, p * (1 - 0.4 * Math.abs(off) / (width * 0.55 + 0.01)), color);
+      }
+    }
+    return s.canvas.toDataURL("image/png");
+  }
+  function chalkMark(w, h, seed, draw) {
+    var s = surface(w, h), P = pen(s.ctx, rng(seed), 1);
+    draw(P, w, h);
+    return s.canvas.toDataURL("image/png");
+  }
+
+  /* The four stages */
+  function drawing(canvas, seed, paint) {
+    var rect = canvas.getBoundingClientRect();
+    var W = Math.max(80, Math.round(rect.width)), H = Math.max(60, Math.round(rect.height));
+    canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    var ctx = canvas.getContext("2d");
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    var P = pen(ctx, rng(seed), Math.max(0.8, Math.min(1.3, W / 290)));
+    P.W = W; P.H = H; P.ink = css("--chalk"); P.berry = css("--berry");
+    paint(P);
+    ctx.globalAlpha = 1;
+  }
+  var painters = {
+    stem: function (p) {
+      var cx = p.W * 0.5, cy = p.H * 0.52, s = Math.min(p.W, p.H * 1.25) * 0.95;
+      p.ring(cx - s * 0.6, cy + s * 0.05, s * 0.24, s * 0.22, 0.2, 1.8, 0.62, p.ink, -1.05, 1.15);
+      p.ring(cx + s * 0.6, cy - s * 0.03, s * 0.23, s * 0.21, -0.3, 1.8, 0.62, p.ink, 2.0, 4.3);
+      p.ring(cx, cy, s * 0.31, s * 0.28, 0.1, 2.6, 0.95, p.ink);
+      var nx = cx + s * 0.015, ny = cy - s * 0.005;
+      p.rub(nx, ny, s * 0.22, s * 0.2, 0.3, 0.3, p.ink, -0.85);
+      p.ring(nx, ny, s * 0.22, s * 0.2, 0.3, 1.8, 0.85, p.ink);
+      p.rub(nx + s * 0.04, ny - s * 0.025, s * 0.075, s * 0.065, 0.6, 1.05, p.berry, -0.85);
+      p.ring(nx + s * 0.04, ny - s * 0.025, s * 0.075, s * 0.065, 0.6, 1.3, 0.9, p.berry);
+    },
+    progenitor: function (p) {
+      /* A neural rosette: progenitors packed radially around a small lumen, nuclei at different depths */
+      var cx = p.W * 0.5, cy = p.H * 0.5, r = Math.min(p.W, p.H) * 0.47, n = 12, lumen = r * 0.17, i, k;
+      p.ring(cx, cy, r * 0.97, r * 0.93, 0.2, 1.5, 0.6, p.ink);
+      p.ring(cx, cy, lumen, lumen * 0.94, 0, 1.6, 0.9, p.ink);
+      var a0 = p.R() * 6.283;
+      for (i = 0; i < n; i++) {
+        var a = a0 + (i / n) * 6.283 + (p.R() - 0.5) * 0.1, bend = (p.R() - 0.5) * 0.16, pts = [];
+        for (k = 0; k <= 6; k++) {
+          var rr = lumen * 1.02 + (r * 0.93 - lumen) * k / 6, aa = a + bend * Math.sin((k / 6) * 3.1416);
+          pts.push([cx + Math.cos(aa) * rr, cy + Math.sin(aa) * rr]);
+        }
+        p.line(p.curve(pts, 4), 1.05, 0.62, p.ink);
+      }
+      for (i = 0; i < n; i++) {
+        var am = a0 + ((i + 0.5) / n) * 6.283, f = 0.3 + p.R() * 0.42, rn = lumen + (r * 0.9 - lumen) * f;
+        var nrx = r * 0.12, nry = Math.min(r * 0.06, rn * Math.sin(3.1416 / n) * 0.7);
+        var x = cx + Math.cos(am) * rn, y = cy + Math.sin(am) * rn;
+        p.rub(x, y, nrx, nry, am, 0.34, p.ink, am + 0.9);
+        p.ring(x, y, nrx, nry, am, 1.0, 0.78, p.ink);
+        p.rub(x, y, r * 0.032, r * 0.028, am, 1.05, p.berry, am, 0.8);
+      }
+    },
+    neuron: function (p) {
+      var cx = p.W * 0.36, cy = p.H * 0.52, s = Math.min(p.W, p.H * 1.25) * 0.95;
+      [[2.55, 0.34, -0.5], [3.45, 0.3, 0.55], [4.25, 0.28, -0.45], [1.75, 0.26, 0.5]].forEach(function (d) {
+        var a = d[0], L = s * d[1];
+        var start = [cx + Math.cos(a) * s * 0.09, cy + Math.sin(a) * s * 0.09];
+        var mid = [cx + Math.cos(a + 0.08) * L * 0.55, cy + Math.sin(a + 0.08) * L * 0.55];
+        var end = [cx + Math.cos(a + 0.16) * L, cy + Math.sin(a + 0.16) * L];
+        p.line(p.curve([start, mid, end], 10), 2.2, 0.9, p.ink);
+        var br = [mid[0] + Math.cos(a + d[2]) * L * 0.42, mid[1] + Math.sin(a + d[2]) * L * 0.42];
+        p.line(p.curve([mid, br], 6), 1.4, 0.75, p.ink);
+      });
+      p.line(p.curve([[cx + s * 0.1, cy + s * 0.01], [cx + s * 0.3, cy - s * 0.05], [cx + s * 0.5, cy + s * 0.05], [p.W * 0.84, cy - s * 0.01]], 12), 1.7, 0.85, p.ink);
+      var gx = p.W * 0.84, gy = cy - s * 0.01;
+      p.rub(gx + s * 0.02, gy, s * 0.035, s * 0.028, 0, 0.45, p.ink, 0.4);
+      for (var i = -2; i <= 2; i++) {
+        var a2 = i * 0.38;
+        p.line(p.curve([[gx, gy], [gx + Math.cos(a2) * s * 0.06, gy + Math.sin(a2) * s * 0.06], [gx + Math.cos(a2 * 1.1) * s * 0.1, gy + Math.sin(a2 * 1.1) * s * 0.1]], 5), 1.1, 0.7, p.ink);
+      }
+      p.rub(cx, cy, s * 0.095, s * 0.09, 0.3, 0.3, p.ink, -0.85);
+      p.ring(cx, cy, s * 0.1, s * 0.095, 0.3, 2.3, 0.95, p.ink);
+      p.ring(cx + s * 0.005, cy, s * 0.05, s * 0.045, 0.3, 1.2, 0.8, p.ink);
+    },
+    synapse: function (p) {
+      var s = Math.min(p.W, p.H * 1.25) * 0.95, cx = p.W * 0.5;
+      p.line(p.curve([[p.W * 0.06, p.H * 0.04], [cx - s * 0.32, p.H * 0.12], [cx - s * 0.17, p.H * 0.21]], 10), 2.1, 0.9, p.ink);
+      var bx = cx, by = p.H * 0.32;
+      p.rub(bx, by, s * 0.24, s * 0.14, 0.05, 0.16, p.ink, -0.85);
+      p.ring(bx, by, s * 0.25, s * 0.15, 0.05, 2.4, 0.95, p.ink);
+      for (var i = 0; i < 11; i++) {
+        var a = p.R() * 6.283, r = Math.sqrt(p.R()) * 0.75;
+        p.ring(bx + Math.cos(a) * s * 0.17 * r, by - s * 0.01 + Math.sin(a) * s * 0.085 * r, s * 0.022, s * 0.021, 0, 1.0, 0.8, p.ink);
+      }
+      var hx = cx, hy = p.H * 0.66;
+      p.ring(hx, hy, s * 0.21, s * 0.1, 0, 2.4, 0.95, p.ink);
+      p.rub(hx, hy - s * 0.072, s * 0.15, s * 0.022, 0, 1.05, p.berry, 0.2);
+      p.line(p.curve([[hx - s * 0.17, hy - s * 0.055], [hx, hy - s * 0.1], [hx + s * 0.17, hy - s * 0.055]], 10), 3.2, 1.0, p.berry);
+      p.line([[hx - s * 0.045, hy + s * 0.095], [hx - s * 0.035, p.H * 0.86]], 1.9, 0.9, p.ink);
+      p.line([[hx + s * 0.045, hy + s * 0.095], [hx + s * 0.04, p.H * 0.86]], 1.9, 0.9, p.ink);
+      p.line(p.curve([[p.W * 0.04, p.H * 0.87], [cx, p.H * 0.865], [p.W * 0.96, p.H * 0.87]], 10), 2.3, 0.95, p.ink);
+      p.line(p.curve([[p.W * 0.04, p.H * 0.98], [cx, p.H * 0.975], [p.W * 0.96, p.H * 0.98]], 10), 2.0, 0.85, p.ink);
+    }
+  };
+
+  try {
+    var rootStyle = document.documentElement.style, ink = css("--chalk"), berry = css("--berry");
+    rootStyle.setProperty("--paper-grain", "url(" + paperGrain() + ")");
+    rootStyle.setProperty("--rule-ink", "url(" + chalkRule(ink, 1.25, 0.85, 11) + ")");
+    rootStyle.setProperty("--rule-berry", "url(" + chalkRule(berry, 1.45, 0.9, 12) + ")");
+    rootStyle.setProperty("--dot-berry", "url(" + chalkMark(12, 12, 14, function (P) { P.rub(6, 6, 4.7, 4.4, 0.3, 1.15, berry, 0.6, 0.5); }) + ")");
+    rootStyle.setProperty("--arrow-ink", "url(" + chalkMark(14, 12, 15, function (P) { P.line([[3, 2], [11, 6], [3.5, 10.2]], 1.3, 0.9, ink); }) + ")");
+    document.documentElement.classList.add("chalked");
+  } catch (e) {}
+
+  var chalkCanvases = Array.prototype.slice.call(document.querySelectorAll("canvas.chalk"));
+  function drawAll() {
+    chalkCanvases.forEach(function (c, i) { drawing(c, 101 + i * 17, painters[c.getAttribute("data-draw")]); });
+  }
+  if (window.ResizeObserver) { var ro = new ResizeObserver(function () { drawAll(); }); chalkCanvases.forEach(function (c) { ro.observe(c); }); }
+  else window.addEventListener("resize", drawAll);
+  drawAll();
+})();
+</script>
+
+<!-- Fig. 1, the neuron. If WebGL or the module load fails, the page simply shows its stone background. -->
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const canvas = document.getElementById("gl");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const small = Math.min(innerWidth, innerHeight) < 700;
+const narrow = matchMedia("(max-width: 720px)").matches;
+const rootStyle = getComputedStyle(document.documentElement);
+const PAPER = new THREE.Color(rootStyle.getPropertyValue("--paper").trim() || "#EFEEEA");
+const NIGHT = new THREE.Color(rootStyle.getPropertyValue("--night").trim() || "#07090B");
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" });
+const DPR = Math.min(window.devicePixelRatio || 1, small ? 1.6 : 2);
+renderer.setPixelRatio(DPR);
+renderer.setSize(innerWidth, innerHeight, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+
+const scene = new THREE.Scene();
+scene.background = PAPER.clone();
+scene.fog = new THREE.Fog(PAPER.clone(), 38, 95);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const key = new THREE.DirectionalLight(0xffffff, 1.7); key.position.set(-8, 12, 10); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 1.0); rim.position.set(9, -3, -8); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xbab6ad, 0.5));
+const camera = new THREE.PerspectiveCamera(36, innerWidth / innerHeight, 0.05, 400);
+
+function mulberry(seed) {
+  return () => {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const R = mulberry(1987);
+const rand = (a, b) => a + (b - a) * R();
+function randUnit() {
+  const u = R() * 2 - 1, th = R() * Math.PI * 2, s = Math.sqrt(1 - u * u);
+  return new THREE.Vector3(s * Math.cos(th), u, s * Math.sin(th));
+}
+
+/* Soma and a spiny stretch of dendrite in the reconstruction (scene units, model centred on its bounding box) */
+const META = { soma: [6.3352, -3.3041, -0.2854], somaR: 1.2494, spine: [5.4182, 5.8117, -2.2312] };
+const U = {
+  uTime: { value: 0 }, uPulse: { value: 1 }, uSpine: { value: 0 }, uNuc: { value: 0 }, uFade: { value: 0 }, uScale: { value: innerHeight * DPR * 0.5 },
+  /* On wide screens the neuron dissolves into the paper before it reaches the text column */
+  uMask: { value: 0 }, uMaskEdge: { value: new THREE.Vector2(0.38, 0.5) }, uRes: { value: renderer.getDrawingBufferSize(new THREE.Vector2()) }
+};
+const MASK = "gl_FragColor.a *= mix(1.0, smoothstep(uMaskEdge.x, uMaskEdge.y, gl_FragCoord.x / uRes.x), uMask);";
+
+/* Satin graphite, with a faint warm signal travelling out from the soma */
+const skin = new THREE.MeshPhysicalMaterial({
+  color: 0x34322F, roughness: 0.42, metalness: 0.1, clearcoat: 0.6, clearcoatRoughness: 0.28,
+  sheen: 0.35, sheenRoughness: 0.5, sheenColor: new THREE.Color(0xC88AA6),
+  transparent: true, opacity: 0
+});
+skin.onBeforeCompile = (sh) => {
+  sh.uniforms.uTime = U.uTime; sh.uniforms.uPulse = U.uPulse; sh.uniforms.uMask = U.uMask; sh.uniforms.uMaskEdge = U.uMaskEdge; sh.uniforms.uRes = U.uRes;
+  sh.vertexShader = sh.vertexShader
+    .replace("#include <common>", "#include <common>\nattribute float aDist;\nvarying float vDist;")
+    .replace("#include <begin_vertex>", "#include <begin_vertex>\nvDist = aDist;");
+  sh.fragmentShader = sh.fragmentShader
+    .replace("#include <common>", "#include <common>\nvarying float vDist;\nuniform float uTime;\nuniform float uPulse;\nuniform float uMask;\nuniform vec2 uMaskEdge;\nuniform vec2 uRes;")
+    .replace("#include <dithering_fragment>", "#include <dithering_fragment>\n" + MASK)
+    .replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\nfloat front = mod(uTime * 6.0, 40.0) - 3.0;\nfloat pw = uPulse * exp(-pow((vDist - front) / 1.2, 2.0));\ntotalEmissiveRadiance += vec3(0.95, 0.72, 0.42) * pw * 0.55;");
+};
+
+const pointVert = `
+  attribute float aSize; attribute float aSeed; uniform float uScale; varying float vSeed;
+  void main() { vSeed = aSeed; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = aSize * uScale / -mv.z; gl_Position = projectionMatrix * mv; }`;
+function pointsGeometry(pos, sizes) {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("aSize", new THREE.Float32BufferAttribute(sizes, 1));
+  g.setAttribute("aSeed", new THREE.Float32BufferAttribute(sizes.map(() => R()), 1));
+  return g;
+}
+
+const neuron = new THREE.Group();
+scene.add(neuron);
+const skinMeshes = [];
+const somaPos = new THREE.Vector3(), spinePos = new THREE.Vector3();
+
+/* Berry points along the dendrites stand for synapses in the first chapter */
+function addSynapseDots(pos, sizes) {
+  const m = new THREE.ShaderMaterial({
+    uniforms: { uTime: U.uTime, uFade: U.uFade, uSpine: U.uSpine, uScale: U.uScale, uMask: U.uMask, uMaskEdge: U.uMaskEdge, uRes: U.uRes },
+    vertexShader: pointVert,
+    fragmentShader: `uniform float uTime; uniform float uFade; uniform float uSpine; uniform float uMask; uniform vec2 uMaskEdge; uniform vec2 uRes; varying float vSeed;
+      void main() { float d = length(gl_PointCoord - 0.5); float a = smoothstep(0.5, 0.3, d);
+        gl_FragColor = vec4(vec3(0.86, 0.2, 0.5), a * uSpine * (0.8 + 0.2 * sin(uTime * 1.6 + vSeed * 30.0)) * uFade); ${MASK} }`,
+    transparent: true, depthWrite: false
+  });
+  neuron.add(new THREE.Points(pointsGeometry(pos, sizes), m));
+}
+
+async function modelBuffer() {
+  try { const r = await fetch("assets/neuron.bin"); if (r.ok) return await r.arrayBuffer(); } catch (e) {}
+  const r2 = await fetch("assets/neuron.b64.txt");
+  if (!r2.ok) throw new Error("model " + r2.status);
+  const bin = atob((await r2.text()).trim());
+  const u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  return u8.buffer;
+}
+async function loadReconstruction() {
+  const buf = await modelBuffer();
+  const dv = new DataView(buf);
+  const magic = String.fromCharCode(dv.getUint8(0), dv.getUint8(1), dv.getUint8(2), dv.getUint8(3));
+  if (magic !== "NRN1") throw new Error("unexpected model file");
+  const nV = dv.getUint32(4, true), nI = dv.getUint32(8, true), q = dv.getFloat32(12, true);
+  const qpos = new Int16Array(buf, 16, nV * 3);
+  let off = 16 + nV * 6; off += (4 - (off % 4)) % 4;
+  const idx = new Uint16Array(buf, off, nI);
+  const pos = new Float32Array(nV * 3);
+  for (let i = 0; i < pos.length; i++) pos[i] = qpos[i] * q;
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setIndex(new THREE.BufferAttribute(idx, 1));
+  g.computeVertexNormals();
+  somaPos.fromArray(META.soma);
+  spinePos.fromArray(META.spine);
+  const dist = new Float32Array(nV);
+  let maxD = 0;
+  for (let i = 0; i < nV; i++) {
+    const dx = pos[i * 3] - somaPos.x, dy = pos[i * 3 + 1] - somaPos.y, dz = pos[i * 3 + 2] - somaPos.z;
+    dist[i] = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    if (dist[i] > maxD) maxD = dist[i];
+  }
+  g.setAttribute("aDist", new THREE.BufferAttribute(dist, 1));
+  const mesh = new THREE.Mesh(g, skin);
+  skinMeshes.push(mesh); neuron.add(mesh);
+  const nrm = g.attributes.normal.array, pts = [], sizes = [];
+  for (let k = 0; k < 12000 && sizes.length < 1200; k++) {
+    const i = Math.floor(R() * nV);
+    if (dist[i] < maxD * 0.33) continue;
+    const o = rand(0.04, 0.1);
+    pts.push(pos[i * 3] + nrm[i * 3] * o, pos[i * 3 + 1] + nrm[i * 3 + 1] * o, pos[i * 3 + 2] + nrm[i * 3 + 2] * o);
+    sizes.push(rand(0.08, 0.15));
+  }
+  addSynapseDots(pts, sizes);
+  return { somaR: META.somaR, label: "An hSyn::GFP neuron in a human brain organoid, reconstructed in three dimensions from confocal images." };
+}
+
+/* Fallback if the model cannot load: a generated neuron */
+function buildGenerated() {
+  const SOMA = 1.3, branches = [];
+  function grow(start, dir, radius, dist0, depth, maxLen, kind) {
+    const pts = [start.clone()], radii = [radius], dists = [dist0];
+    let p = start.clone(), d = dir.clone().normalize(), r = radius, len = 0, dist = dist0;
+    const step = kind === "axon" ? 0.55 : 0.3, wander = kind === "axon" ? 0.06 : 0.2;
+    while (len < maxLen && r > 0.03) {
+      d.add(randUnit().multiplyScalar(wander)).normalize();
+      p = p.clone().addScaledVector(d, step); len += step; dist += step;
+      r *= kind === "axon" ? 0.998 : 0.975;
+      pts.push(p.clone()); radii.push(r); dists.push(dist);
+      const pb = kind === "axon" ? 0.018 : 0.08 * Math.pow(0.78, depth);
+      if (depth < (kind === "axon" ? 2 : 4) && len > 0.9 && R() < pb) {
+        grow(p, d.clone().add(randUnit().multiplyScalar(0.95)).normalize(), Math.max(0.05, r * 0.72), dist, depth + 1, maxLen * rand(0.4, 0.7), kind === "axon" ? "collateral" : kind);
+        r *= 0.86;
+      }
+    }
+    branches.push({ pts, radii, dists, kind });
+  }
+  for (let i = 0; i < 7; i++) { const dir = randUnit(); dir.y = dir.y * 0.6 - 0.15; dir.normalize(); grow(dir.clone().multiplyScalar(SOMA * 0.8), dir, 0.34, 0, 0, rand(6.5, 10), "dendrite"); }
+  grow(new THREE.Vector3(0, SOMA * 0.85, 0), new THREE.Vector3(0.08, 1, 0.03), 0.46, 0, 0, 13.5, "dendrite");
+  grow(new THREE.Vector3(0.1, -SOMA * 0.85, 0), new THREE.Vector3(0.12, -1, 0.06), 0.13, 0, 0, 24, "axon");
+  const pos = [], dist = [], idx = [], radial = 8;
+  let base = 0;
+  const t = new THREE.Vector3(), n = new THREE.Vector3(), b = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0), side = new THREE.Vector3(1, 0, 0);
+  for (const br of branches) {
+    const P = br.pts; if (P.length < 2) continue;
+    let prev = null;
+    for (let i = 0; i < P.length; i++) {
+      if (i === 0) t.subVectors(P[1], P[0]); else if (i === P.length - 1) t.subVectors(P[i], P[i - 1]); else t.subVectors(P[i + 1], P[i - 1]);
+      t.normalize();
+      if (!prev) n.crossVectors(t, Math.abs(t.y) < 0.9 ? up : side).normalize(); else n.copy(prev).addScaledVector(t, -prev.dot(t)).normalize();
+      prev = n.clone(); b.crossVectors(t, n).normalize();
+      const r = br.radii[i];
+      for (let k = 0; k < radial; k++) {
+        const a = (k / radial) * Math.PI * 2, ca = Math.cos(a), sa = Math.sin(a);
+        pos.push(P[i].x + r * (ca * n.x + sa * b.x), P[i].y + r * (ca * n.y + sa * b.y), P[i].z + r * (ca * n.z + sa * b.z));
+        dist.push(br.dists[i]);
+      }
+      if (i > 0) { const r0 = base + (i - 1) * radial, r1 = base + i * radial; for (let k = 0; k < radial; k++) { const k1 = (k + 1) % radial; idx.push(r0 + k, r1 + k, r1 + k1, r0 + k, r1 + k1, r0 + k1); } }
+    }
+    base += P.length * radial;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("aDist", new THREE.Float32BufferAttribute(dist, 1));
+  g.setIndex(idx); g.computeVertexNormals();
+  const tubes = new THREE.Mesh(g, skin);
+  skinMeshes.push(tubes); neuron.add(tubes);
+  const somaGeo = new THREE.IcosahedronGeometry(SOMA, 5);
+  somaGeo.setAttribute("aDist", new THREE.BufferAttribute(new Float32Array(somaGeo.attributes.position.count), 1));
+  const somaMesh = new THREE.Mesh(somaGeo, skin);
+  skinMeshes.push(somaMesh); neuron.add(somaMesh);
+  const dots = [], sizes = [];
+  let best = null;
+  for (const br of branches) {
+    if (br.kind !== "dendrite") continue;
+    let count = 0;
+    for (let i = 1; i < br.pts.length; i++) {
+      if (br.dists[i] < 2.5 || R() > 0.75) continue;
+      const tdir = br.pts[i].clone().sub(br.pts[i - 1]).normalize();
+      const offv = randUnit().addScaledVector(tdir, -randUnit().dot(tdir)).normalize();
+      const p = br.pts[i].clone().addScaledVector(offv, br.radii[i] + rand(0.06, 0.14));
+      dots.push(p.x, p.y, p.z); sizes.push(rand(0.08, 0.15)); count++;
+    }
+    if (!best || count > best.count) best = { count, p: br.pts[Math.floor(br.pts.length * 0.7)] };
+  }
+  addSynapseDots(dots, sizes);
+  somaPos.set(0, 0, 0); spinePos.copy(best.p);
+  return { somaR: SOMA, label: "A neuron, rendered in your browser." };
+}
+
+/* The nucleus as a three-channel fluorescence image: Hoechst (blue), nucleolin (green) ringing the nucleolus, SHANK3 (red) filling it */
+const nucleus = new THREE.Group();
+function glow(pos, sizes, color, alpha) {
+  const m = new THREE.ShaderMaterial({
+    uniforms: { uNuc: U.uNuc, uScale: U.uScale, uColor: { value: new THREE.Color(color) }, uAlpha: { value: alpha } },
+    vertexShader: pointVert,
+    fragmentShader: `uniform float uNuc; uniform vec3 uColor; uniform float uAlpha; varying float vSeed;
+      void main() { float d = length(gl_PointCoord - 0.5); float a = exp(-d * d * 16.0); gl_FragColor = vec4(uColor * a * uAlpha * uNuc, 1.0); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  });
+  return new THREE.Points(pointsGeometry(pos, sizes), m);
+}
+function addNucleus(somaR) {
+  const nr = somaR * 0.62;
+  const nucleoli = [
+    { c: new THREE.Vector3(0.1 * nr, 0.05 * nr, 0), r: 0.42 * nr, ph: 0, share: 0.8 },
+    { c: new THREE.Vector3(-0.47 * nr, -0.33 * nr, 0.12 * nr), r: 0.16 * nr, ph: 2.1, share: 0.2 }
+  ];
+  const field = (p) => {
+    let best = 1e9;
+    for (const n of nucleoli) {
+      const dx = p.x - n.c.x, dy = p.y - n.c.y, dz = p.z - n.c.z;
+      const f = Math.sqrt(dx * dx + dy * dy + dz * dz) / n.r + 0.17 * Math.sin(5.1 * dx / n.r + 1.3 + n.ph) * Math.sin(4.3 * dy / n.r + 0.4) + 0.1 * Math.sin(6.7 * dz / n.r + 0.8 + n.ph);
+      if (f < best) best = f;
+    }
+    return best;
+  };
+  const v = new THREE.Vector3();
+  const near = (spread) => {
+    const n = R() < nucleoli[0].share ? nucleoli[0] : nucleoli[1];
+    return v.set((R() * 2 - 1) * n.r * spread, (R() * 2 - 1) * n.r * spread, (R() * 2 - 1) * n.r * spread).add(n.c);
+  };
+  const inNucleus = () => {
+    for (;;) {
+      v.set(R() * 2 - 1, R() * 2 - 1, R() * 2 - 1);
+      if (v.lengthSq() <= 1) return v.set(v.x * nr * 1.05, v.y * nr * 0.95, v.z * nr * 0.8);
+    }
+  };
+  /* Hoechst: chromatin fills the nucleus but not the nucleoli */
+  const hp = [], hs = [];
+  for (let k = 0; k < 60000 && hs.length < 3400; k++) {
+    inNucleus();
+    if (field(v) < 1.2) continue;
+    const tex = 0.5 + 0.5 * Math.sin(v.x / nr * 9 + 1) * Math.sin(v.y / nr * 8 + 2) * Math.sin(v.z / nr * 10);
+    if (R() > tex) continue;
+    hp.push(v.x, v.y, v.z); hs.push(rand(0.06, 0.12));
+  }
+  nucleus.add(glow(hp, hs, "#3E66FF", 0.2));
+  /* a few denser chromatin foci */
+  const cp = [], cs = [];
+  for (let f = 0, tries = 0; f < 9 && tries < 400; tries++) {
+    const c = inNucleus().clone();
+    if (field(c) < 1.6) continue;
+    f++;
+    for (let j = 0; j < 36; j++) {
+      const q = c.clone().add(randUnit().multiplyScalar(R() * 0.07 * nr));
+      cp.push(q.x, q.y, q.z); cs.push(rand(0.05, 0.09));
+    }
+  }
+  nucleus.add(glow(cp, cs, "#5F7DFF", 0.15));
+  /* SHANK3: dense granules filling the nucleoli */
+  const sp = [], ss = [];
+  let granules = 0;
+  for (let k = 0; k < 90000 && granules < 540; k++) {
+    near(1.4);
+    if (field(v) > 0.95) continue;
+    granules++;
+    const n = 4 + Math.floor(R() * 6);
+    for (let j = 0; j < n; j++) {
+      const q = v.clone().add(randUnit().multiplyScalar(R() * 0.035 * nr));
+      sp.push(q.x, q.y, q.z); ss.push(rand(0.025, 0.05));
+    }
+  }
+  nucleus.add(glow(sp, ss, "#FF2A1E", 0.55));
+  /* Nucleolin: a shell around each nucleolus */
+  const np = [], ns = [];
+  for (let k = 0; k < 140000 && ns.length < 2300; k++) {
+    near(1.6);
+    const f = field(v);
+    if (f < 0.98 || f > 1.16) continue;
+    np.push(v.x, v.y, v.z); ns.push(rand(0.04, 0.075));
+  }
+  nucleus.add(glow(np, ns, "#2BFF6A", 0.3));
+  /* scattered SHANK3 puncta in the nucleoplasm */
+  const pp = [], ps = [];
+  for (let k = 0; k < 8000 && ps.length < 150; k++) {
+    inNucleus();
+    if (field(v) < 1.35) continue;
+    pp.push(v.x, v.y, v.z); ps.push(rand(0.02, 0.04));
+  }
+  nucleus.add(glow(pp, ps, "#FF3B2E", 0.45));
+  const shell = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 48), new THREE.ShaderMaterial({
+    uniforms: { uNuc: U.uNuc },
+    vertexShader: `varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix*mv; }`,
+    fragmentShader: `uniform float uNuc; varying vec3 vN; varying vec3 vV; void main(){ float f = pow(1.0 - abs(dot(vN, vV)), 3.0); gl_FragColor = vec4(vec3(0.24, 0.4, 1.0) * f * 0.55 * uNuc, 1.0); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  }));
+  shell.scale.set(nr * 1.05, nr * 0.95, nr * 0.8);
+  nucleus.add(shell);
+  nucleus.position.copy(somaPos);
+  nucleus.visible = false;
+  neuron.add(nucleus);
+}
+
+/* Chapters. Wide screens keep the neuron to the right of the text; narrow screens lift it above. */
+const scenes = narrow ? {
+  hero:    { anchor: "center", off: [0, 1, 46], look: [0, -8.5, 0], spin: 0.05, spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, mask: 0 },
+  synapse: { anchor: "spine", off: [0.3, 2.0, 8.6], look: [0, 3.0, 0], spin: 0.0, spine: 1, nuc: 0, night: 0, opacity: 1, pulse: 0.3, mask: 0 },
+  nucleus: { anchor: "soma", off: [0, -1.0, 7.2], look: [0, -1.2, 0], spin: 0.0, spine: 0, nuc: 1, night: 1, opacity: 0, pulse: 0, mask: 0 },
+  far:     { anchor: "center", off: [0, 2, 56], look: [0, 4, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 0 },
+  after:   { anchor: "center", off: [0, 2, 56], look: [0, 4, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 0 },
+  end:     { anchor: "center", off: [0, 2, 56], look: [0, 4, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 0 }
+} : {
+  hero:    { anchor: "center", off: [-8.4, 0.5, 35], look: [-9, 0, 0], spin: 0.05, spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, mask: 1 },
+  synapse: { anchor: "spine", off: [-2.2, 0.8, 8.2], look: [-2.2, 0.5, 0], spin: 0.0, spine: 1, nuc: 0, night: 0, opacity: 1, pulse: 0.3, mask: 1 },
+  nucleus: { anchor: "soma", off: [-1.0, 0.2, 4.2], look: [-1.0, 0.12, 0], spin: 0.0, spine: 0, nuc: 1, night: 1, opacity: 0, pulse: 0, mask: 0 },
+  far:     { anchor: "center", off: [-14, 1, 50], look: [-16, 0, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 0 },
+  after:   { anchor: "center", off: [-14, 1, 50], look: [-16, 0, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 0 },
+  end:     { anchor: "center", off: [-8.4, 0.5, 35], look: [-9, 0, 0], spin: 0.05, spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, mask: 1 }
+};
+const sections = Array.from(document.querySelectorAll("[data-scene]"));
+let target = scenes.hero, sceneName = "hero";
+function pickScene() {
+  let pick = "hero";
+  for (const s of sections) {
+    const at = innerHeight * (narrow && s.classList.contains("beat") ? 0.85 : 0.5);
+    if (s.getBoundingClientRect().top <= at) pick = s.dataset.scene;
+  }
+  if (pick !== sceneName) {
+    sceneName = pick; target = scenes[pick] || scenes.hero;
+    document.documentElement.classList.toggle("lights-off", pick === "nucleus");
+  }
+}
+addEventListener("scroll", pickScene, { passive: true });
+
+const live = { pos: new THREE.Vector3(...scenes.hero.off), look: new THREE.Vector3(...scenes.hero.look), spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, spin: 0.05, mask: scenes.hero.mask };
+camera.position.copy(live.pos);
+const anchor = new THREE.Vector3(), wantPos = new THREE.Vector3(), wantLook = new THREE.Vector3();
+let mx = 0, my = 0, spinVel = 0, dragX = null;
+addEventListener("pointermove", (e) => { mx = (e.clientX / innerWidth) * 2 - 1; my = (e.clientY / innerHeight) * 2 - 1; }, { passive: true });
+const hero = document.querySelector(".hero");
+hero.addEventListener("pointerdown", (e) => { if (e.target.closest("a, button")) return; dragX = e.clientX; hero.classList.add("dragging"); hero.setPointerCapture(e.pointerId); });
+hero.addEventListener("pointermove", (e) => { if (dragX == null) return; spinVel += (e.clientX - dragX) * 0.0009; dragX = e.clientX; });
+const endDrag = () => { dragX = null; hero.classList.remove("dragging"); };
+hero.addEventListener("pointerup", endDrag);
+hero.addEventListener("pointercancel", endDrag);
+let drawnNight = -1;
+addEventListener("resize", () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight, false);
+  renderer.getDrawingBufferSize(U.uRes.value);
+  U.uScale.value = innerHeight * DPR * 0.5;
+  drawnNight = -1;
+});
+
+let ready = false;
+(async () => {
+  let info;
+  try { info = await loadReconstruction(); } catch (e) { info = buildGenerated(); }
+  addNucleus(info.somaR);
+  const label = document.getElementById("neuron-label");
+  if (label) label.textContent = info.label;
+  ready = true;
+  pickScene();
+})();
+
+const clock = new THREE.Clock();
+let t = 0, fade = 0;
+function frame() {
+  requestAnimationFrame(frame);
+  if (document.hidden) return;
+  const dt = Math.min(clock.getDelta(), 0.05);
+  if (!reduce) t += dt;
+  const k = reduce ? 1 : 1 - Math.exp(-dt * 2.2);
+  for (const name of ["spine", "nuc", "night", "opacity", "pulse", "spin", "mask"]) live[name] += (target[name] - live[name]) * k;
+  if (ready) fade = reduce ? 1 : Math.min(1, fade + dt * 0.7);
+  if (!reduce) neuron.rotation.y += (live.spin + spinVel) * dt;
+  spinVel *= Math.pow(0.04, dt);
+  if (!reduce) nucleus.rotation.y += dt * 0.12 * live.nuc;
+  if (target.anchor === "soma") anchor.copy(somaPos); else if (target.anchor === "spine") anchor.copy(spinePos); else anchor.set(0, 0, 0);
+  neuron.localToWorld(anchor);
+  wantLook.set(target.look[0], target.look[1], target.look[2]).add(anchor);
+  wantPos.set(target.off[0], target.off[1], target.off[2]).add(anchor);
+  if (!reduce) { wantPos.x += mx * 0.8 * (1 - live.nuc); wantPos.y += -my * 0.5 * (1 - live.nuc); }
+  live.pos.lerp(wantPos, k); live.look.lerp(wantLook, k);
+  camera.position.copy(live.pos); camera.lookAt(live.look);
+
+  scene.background.copy(PAPER).lerp(NIGHT, live.night);
+  scene.fog.color.copy(scene.background);
+  skin.opacity = live.opacity * fade;
+  skin.depthWrite = skin.opacity > 0.97;
+  const showSkin = skin.opacity > 0.002;
+  for (const m of skinMeshes) m.visible = showSkin;
+  nucleus.visible = live.nuc > 0.01;
+  U.uNuc.value = live.nuc * fade;
+  U.uTime.value = t; U.uSpine.value = live.spine; U.uFade.value = fade;
+  U.uPulse.value = reduce ? 0 : live.pulse;
+  U.uMask.value = live.mask;
+  /* When nothing is on show, the last frame (plain paper) stays on screen and the GPU rests */
+  if (!ready || showSkin || nucleus.visible || Math.abs(live.night - drawnNight) > 0.0005) {
+    renderer.render(scene, camera);
+    drawnNight = live.night;
+  }
+}
+frame();
+</script>
+</body>
+</html>
