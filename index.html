@@ -206,6 +206,11 @@ html.lights-off .beat .label.berry { color: var(--night-berry); }
 .poster .award { max-width: none; margin: auto 0 0; padding-top: 22px; }
 .poster .award .print { aspect-ratio: 4 / 3; }
 .poster .award img { height: 100%; object-fit: cover; object-position: var(--focus, 50% 50%); filter: grayscale(1) contrast(1.04); }
+/* Where supported, the two cards share rows, so the photos start at the same height whatever the titles' lengths */
+@supports (grid-template-rows: subgrid) {
+  .poster { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; }
+  .poster .award { margin: 0; }
+}
 .group-label { margin: 48px 0 14px; }
 
 /* Documentary */
