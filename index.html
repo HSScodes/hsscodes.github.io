@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add("js")</script>
 <title>Henrique J. Santos</title>
 <meta name="description" content="Henrique J. Santos, doctoral researcher in neuroscience at the University of Coimbra. The functions of SHANK3 before the first synapse forms, in human stem cells and brain organoids.">
 <link rel="canonical" href="https://hsscodes.github.io/">
@@ -10,6 +11,8 @@
 <meta property="og:title" content="Henrique J. Santos">
 <meta property="og:description" content="Henrique J. Santos, doctoral researcher in neuroscience at the University of Coimbra. The functions of SHANK3 before the first synapse forms, in human stem cells and brain organoids.">
 <meta property="og:url" content="https://hsscodes.github.io/">
+<meta property="og:image" content="https://hsscodes.github.io/assets/portrait.jpg">
+<meta property="og:image:alt" content="Henrique J. Santos in the laboratory">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#EFEEEA">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23EFEEEA'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='%239B1E58'/%3E%3C/svg%3E">
@@ -34,6 +37,10 @@
   --night-berry: #FF7AAE;
   --display: "Newsreader", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
   --sans: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 * { box-sizing: border-box; }
@@ -108,9 +115,10 @@ h1 em { font-style: italic; font-weight: 300; }
   display: inline-flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer;
   font: inherit; font-weight: 500; color: var(--paper); background: var(--ink);
   padding: 12px 22px; border-radius: 999px; border: 1px solid var(--ink);
-  transition: background .25s, color .25s;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 140ms var(--ease-out);
 }
-.pill:hover { background: var(--berry); border-color: var(--berry); color: #fff; }
+.pill:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .pill:hover { background: var(--berry); border-color: var(--berry); color: #fff; } }
 .textlink { font-weight: 500; text-decoration: underline; text-decoration-color: var(--line); }
 .figcap {
   position: absolute; right: 0; bottom: 64px; max-width: 280px;
@@ -162,6 +170,16 @@ html.lights-off .beat .label.berry { color: var(--night-berry); }
 .facts div { border-top: 1px solid var(--ink); padding-top: 14px; min-width: 0; }
 .facts dt { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
 .facts dd { margin: 0; color: var(--ink-2); }
+/* In the lab: the portrait hangs on the wall as Fig. 2, beside the wall text */
+.lab-wall { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px 72px; align-items: start; }
+.lab-wall .facts { grid-template-columns: 1fr; gap: 30px; }
+.lab-wall .facts dd { max-width: 54ch; }
+.plate { margin: 0; max-width: 380px; }
+.print { position: relative; display: block; }
+.print img { display: block; width: 100%; height: auto; }
+.print::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: var(--paper-grain, none); background-size: 240px 240px; mix-blend-mode: multiply; }
+.plate figcaption { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--ink); font-size: 0.8rem; line-height: 1.5; color: var(--ink-2); }
+.plate figcaption b { font-weight: 600; color: var(--ink); margin-right: 6px; }
 .aside { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 16px 64px; align-items: start; border-top: 1px solid var(--line); padding-top: 34px; margin-top: 72px; }
 .aside h3 { margin: 0; }
 .aside > p { margin: 0; color: var(--ink-2); font-family: var(--display); font-size: 1.25rem; line-height: 1.5; }
@@ -217,7 +235,7 @@ footer a { text-decoration: none; }
 .grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: var(--paper-grain, none); background-size: 240px 240px; transition: opacity .8s ease; }
 html.lights-off .grain { opacity: 0; }
 html.chalked .track li, html.chalked .facts div, html.chalked .pubs, html.chalked .film,
-html.chalked .project, html.chalked .edu, html.chalked .links, html.chalked .figcap {
+html.chalked .project, html.chalked .edu, html.chalked .links, html.chalked .figcap, html.chalked .plate figcaption {
   border-top-color: transparent;
   background-image: var(--rule-ink);
   background-repeat: repeat-x;
@@ -235,9 +253,53 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
   }
 }
 
+/* The chapters are sheets of paper that slide over the held neuron; between them the stage opens */
+html, body { overflow-x: clip; }
+.chapter { position: relative; }
+.chapter::before {
+  content: ""; position: absolute; z-index: -1; top: -32px; bottom: -56px;
+  left: calc(50% - 50vw); right: calc(50% - 50vw);
+  background-color: var(--paper); background-image: var(--paper-grain, none); background-size: 240px 240px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 56px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 56px), transparent 100%);
+}
+.chapter + .chapter::before {
+  top: -64px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 56px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 56px), transparent 100%);
+}
+@media (min-width: 721px) { .chapter.contact::before { content: none; } }
+
+/* Arrivals. The name sets in like type on load; below the fold each thing arrives once, in its own manner.
+   Hidden start states exist only with the script running and motion allowed. */
+h1 .line, h1 .line > span, [data-lines] .line, [data-lines] .line > span { display: block; }
+.print { overflow: clip; }
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* Each line rises inside its own mask. The mask reaches well past the line box (the name is set at 0.92), so the
+     dot of the i and the top of the S are never cut, and the name drops its masks once it has set */
+  .js h1 .line, .js .is-split .line { clip-path: inset(-0.34em -0.14em -0.34em -0.14em); }
+  .js h1.set .line { clip-path: none; }
+  .js h1 .line > span { transform: translateY(175%); animation: line-up 1000ms var(--ease-expo) forwards; animation-delay: calc(120ms + var(--i) * 110ms); }
+  .js [data-load] { opacity: 0; transform: translateY(14px); animation: rise-in 700ms var(--ease-out) forwards; animation-delay: var(--d); }
+  .js .is-split .line > span { transform: translateY(170%); }
+  .js .is-split.is-in .line > span { transform: none; transition: transform 800ms var(--ease-expo) calc(var(--i) * 90ms); }
+  .js [data-rise] { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease-out) var(--d, 120ms), transform 800ms var(--ease-out) var(--d, 120ms); }
+  .js [data-rise].is-in { opacity: 1; transform: none; }
+  .js .track .chalk { clip-path: inset(0 100% 0 0); transition: clip-path 1000ms var(--ease-in-out) calc(var(--i, 0) * 140ms); }
+  .js .track.is-in .chalk { clip-path: inset(0); }
+  .js .plate .print { clip-path: inset(0 0 100% 0); transition: clip-path 1000ms var(--ease-in-out); }
+  .js .plate .print img { transform: scale(1.08); transition: transform 1400ms var(--ease-soft); }
+  .js .plate.is-in .print { clip-path: inset(0); }
+  .js .plate.is-in .print img { transform: none; }
+}
+@keyframes line-up { to { transform: none; } }
+@keyframes rise-in { to { opacity: 1; transform: none; } }
+
 @media (max-width: 980px) {
   .film, .edu-grid, .dev-head, .aside { grid-template-columns: 1fr; }
   .facts { grid-template-columns: 1fr; gap: 20px; }
+  .lab-wall { grid-template-columns: 1fr; }
+  .plate { max-width: 320px; }
   .pub { grid-template-columns: 5rem minmax(0, 1fr); }
   .pub .side { grid-column: 2; }
   .figcap { position: static; margin-top: 40px; max-width: 320px; }
@@ -249,18 +311,15 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
   .beat { min-height: 0; padding-top: 58vh; padding-top: 58svh; padding-bottom: 40px; align-items: end; }
   .statement { background: rgba(239, 238, 234, 0.9); padding: 18px 18px 6px; margin-inline: -6px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background-color .8s ease; }
   html.lights-off .beat .statement { background: rgba(7, 9, 11, 0.72); }
-  /* On a phone the chapters are sheets of paper that slide over the neuron, so text never sits on top of it */
-  .chapter { position: relative; }
-  .hero::before, .chapter::before {
-    content: ""; position: absolute; z-index: -1; bottom: -56px;
-    left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  /* On a phone the hero's text sits on a sheet too, and the first chapter continues it */
+  .hero::before {
+    content: ""; position: absolute; z-index: -1; bottom: -56px; top: calc(52vh - 110px); top: calc(52svh - 110px);
+    left: calc(50% - 50vw); right: calc(50% - 50vw);
     background-color: var(--paper); background-image: var(--paper-grain, none); background-size: 240px 240px;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 56px), transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 56px), transparent 100%);
   }
-  .hero::before { top: calc(52vh - 110px); top: calc(52svh - 110px); }
-  .chapter::before { top: -32px; }
-  .hero + .chapter::before, .chapter + .chapter::before {
+  .hero + .chapter::before {
     top: -64px;
     -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 56px), transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 56px), transparent 100%);
@@ -297,10 +356,10 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
   <section class="hero wrap" id="top" data-scene="hero" aria-labelledby="name">
     <div class="hero-text">
       <p class="label">Neuroscience · University of Coimbra</p>
-      <h1 id="name">Henrique <em>J.</em> Santos</h1>
-      <p class="thesis">SHANK3 is best known for its role at the synapse. My research examines <em>its functions before the first synapse forms.</em></p>
-      <p class="intro">Doctoral researcher at the Center for Neuroscience and Cell Biology, University of Coimbra, working with human induced pluripotent stem cells and brain organoids.</p>
-      <div class="actions">
+      <h1 id="name"><span class="line"><span style="--i:0">Henrique</span></span><span class="line"><span style="--i:1"><em>J.</em> Santos</span></span></h1>
+      <p class="thesis" data-load style="--d:420ms">SHANK3 is best known for its role at the synapse. My research examines <em>its functions before the first synapse forms.</em></p>
+      <p class="intro" data-load style="--d:520ms">Doctoral researcher at the Center for Neuroscience and Cell Biology, University of Coimbra, working with human induced pluripotent stem cells and brain organoids.</p>
+      <div class="actions" data-load style="--d:580ms">
         <a class="pill" href="#research">Explore the research</a>
         <a class="textlink" href="#contact">Contact</a>
       </div>
@@ -310,8 +369,8 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
 
   <section class="chapter wrap" id="research" data-scene="hero" aria-labelledby="research-h">
     <p class="label">Research</p>
-    <h2 id="research-h">SHANK3, before the synapse</h2>
-    <p class="lede">Scroll to follow SHANK3 from the synapse, where it is usually studied, to the nucleolus, where my work begins.</p>
+    <h2 id="research-h" data-lines>SHANK3, before the synapse</h2>
+    <p class="lede" data-rise>Scroll to follow SHANK3 from the synapse, where it is usually studied, to the nucleolus, where my work begins.</p>
   </section>
 
   <section class="beat wrap" data-scene="synapse" aria-label="The established view">
@@ -338,37 +397,43 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
     <div class="dev-head">
       <div>
         <p class="label">Development</p>
-        <h2 id="dev-h">From stem cell to synapse</h2>
+        <h2 id="dev-h" data-lines>From stem cell to synapse</h2>
       </div>
-      <p>Four stages of neural development. Berry marks SHANK3 in the nucleolus of stem cells and progenitors, the focus of my work, and at the postsynaptic density, where it is usually studied.</p>
+      <p data-rise>Four stages of neural development. Berry marks SHANK3 in the nucleolus of stem cells and progenitors, the focus of my work, and at the postsynaptic density, where it is usually studied.</p>
     </div>
     <ol class="track">
-      <li class="mine"><canvas class="chalk" data-draw="stem" role="img" aria-label="Chalk drawing of a stem cell in a colony, with a large nucleus and a berry nucleolus"></canvas><b>Stem cell</b><span>SHANK3 is enriched in the nucleolus.</span><p class="who">My focus</p></li>
-      <li class="mine"><canvas class="chalk" data-draw="progenitor" role="img" aria-label="Chalk drawing of a neural rosette: progenitors arranged radially around a small lumen, each nucleus with a berry nucleolus"></canvas><b>Neural progenitor</b><span>SHANK3 regulates SOX2 expression and the pace of proliferation and differentiation.</span><p class="who">My focus</p></li>
-      <li><canvas class="chalk" data-draw="neuron" role="img" aria-label="Chalk drawing of a young neuron with short dendrites and an axon ending in a growth cone"></canvas><b>Young neuron</b><span>Neurites extend and seek their partners.</span></li>
-      <li><canvas class="chalk" data-draw="synapse" role="img" aria-label="Chalk drawing of a synapse: a presynaptic bouton with vesicles above a dendritic spine whose postsynaptic density is marked in berry"></canvas><b>Synapse</b><span>SHANK3 scaffolds the postsynaptic density.</span><p class="who">The established view</p></li>
+      <li class="mine"><canvas class="chalk" style="--i:0" data-draw="stem" role="img" aria-label="Chalk drawing of a stem cell in a colony, with a large nucleus and a berry nucleolus"></canvas><b>Stem cell</b><span>SHANK3 is enriched in the nucleolus.</span><p class="who">My focus</p></li>
+      <li class="mine"><canvas class="chalk" style="--i:1" data-draw="progenitor" role="img" aria-label="Chalk drawing of a neural rosette: progenitors arranged radially around a small lumen, each nucleus with a berry nucleolus"></canvas><b>Neural progenitor</b><span>SHANK3 regulates SOX2 expression and the pace of proliferation and differentiation.</span><p class="who">My focus</p></li>
+      <li><canvas class="chalk" style="--i:2" data-draw="neuron" role="img" aria-label="Chalk drawing of a young neuron with short dendrites and an axon ending in a growth cone"></canvas><b>Young neuron</b><span>Neurites extend and seek their partners.</span></li>
+      <li><canvas class="chalk" style="--i:3" data-draw="synapse" role="img" aria-label="Chalk drawing of a synapse: a presynaptic bouton with vesicles above a dendritic spine whose postsynaptic density is marked in berry"></canvas><b>Synapse</b><span>SHANK3 scaffolds the postsynaptic density.</span><p class="who">The established view</p></li>
     </ol>
   </section>
 
   <section class="chapter wrap" data-scene="far" aria-labelledby="lab-h">
     <p class="label" id="lab-h">In the lab</p>
-    <dl class="facts">
+    <div class="lab-wall">
+      <figure class="plate">
+        <span class="print"><img src="assets/portrait-print.jpg" width="720" height="960" alt="Henrique J. Santos in the laboratory" loading="lazy" decoding="async"></span>
+        <figcaption><b>Fig. 2</b>Henrique J. Santos in his natural habitat.</figcaption>
+      </figure>
+      <dl class="facts">
       <div><dt>Group</dt><dd>Neuronal Circuits and Behavior group, led by João Peça, at CNC-UC and CIBB, University of Coimbra.</dd></div>
       <div><dt>Funding</dt><dd>FCT doctoral fellowship. The project is supported by a 2024 Phelan-McDermid Syndrome Foundation Translational Award, whose application I co-wrote as a member of the team.</dd></div>
       <div><dt>Recognition</dt><dd>Best Poster Awards at the ERA-NET NEURON Midterm Symposium (Berlin, May 2024) and the PMSF International Conference (July 2024).</dd></div>
-    </dl>
+      </dl>
+    </div>
     <div class="aside">
       <div>
         <p class="label">Also exploring</p>
         <h3>Neuroscience and artificial intelligence</h3>
       </div>
-      <p>Alongside this work, I am interested in the interface between neuroscience and artificial intelligence, in particular whether memory consolidation inspired by sleep and the hippocampus can help language models retain new facts and combine facts learned separately.</p>
+      <p data-rise>Alongside this work, I am interested in the interface between neuroscience and artificial intelligence, in particular whether memory consolidation inspired by sleep and the hippocampus can help language models retain new facts and combine facts learned separately.</p>
     </div>
   </section>
 
   <section class="chapter wrap" id="publications" data-scene="far" aria-labelledby="pubs-h">
     <p class="label">Publications</p>
-    <h2 id="pubs-h">Papers, thesis and posters</h2>
+    <h2 id="pubs-h" data-lines>Papers, thesis and posters</h2>
     <ol class="pubs">
       <li class="pub">
         <span class="yr">2026</span>
@@ -425,20 +490,20 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
     <p class="label">Outreach</p>
     <div class="film">
       <div>
-        <p class="title" id="film-h">Era Uma Vez um Organoide</p>
+        <p class="title" id="film-h" data-lines>Era Uma Vez um Organoide</p>
         <p class="sub">A Jornada de B3 · Once upon an organoid: B3's journey</p>
       </div>
       <div>
         <p class="status">In production</p>
-        <p>A documentary for a general audience about human brain organoids, following the journey of B3. I coordinate this ongoing project, which is funded by the University of Coimbra through its 2026 programme for the promotion of scientific culture (PCC).</p>
+        <p data-rise>A documentary for a general audience about human brain organoids, following the journey of B3. I coordinate this ongoing project, which is funded by the University of Coimbra through its 2026 programme for the promotion of scientific culture (PCC).</p>
       </div>
     </div>
   </section>
 
   <section class="chapter wrap" id="after-hours" data-scene="after" aria-labelledby="after-h">
     <p class="label">After hours</p>
-    <h2 id="after-h">Software I build</h2>
-    <p class="lede">Outside the laboratory I write software, from tools for the bench to a revival of a chat client from 2009.</p>
+    <h2 id="after-h" data-lines>Software I build</h2>
+    <p class="lede" data-rise>Outside the laboratory I write software, from tools for the bench to a revival of a chat client from 2009.</p>
     <div class="projects">
       <article class="project" aria-labelledby="ef-h">
         <p class="label">Laboratory software</p>
@@ -471,7 +536,7 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
     <div class="edu-grid">
       <div>
         <p class="label">Education</p>
-        <h2 id="edu-h">University of Coimbra</h2>
+        <h2 id="edu-h" data-lines>University of Coimbra</h2>
       </div>
       <ol class="edu">
         <li><span class="yr">2024 to present</span><div><b>PhD in Biosciences, Neurosciences</b><div class="d">FCT doctoral fellowship.</div></div></li>
@@ -483,8 +548,8 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
 
   <section class="chapter wrap contact" id="contact" data-scene="end" aria-labelledby="contact-h">
     <p class="label">Contact</p>
-    <h2 id="contact-h">Get in touch</h2>
-    <p class="lede">Email is the best way to reach me.</p>
+    <h2 id="contact-h" data-lines>Get in touch</h2>
+    <p class="lede" data-rise>Email is the best way to reach me.</p>
     <p class="mail" id="mail-addr">hsantos@cnc.uc.pt</p>
     <button class="pill" type="button" id="copy-mail">Copy email</button>
     <ul class="links">
@@ -514,6 +579,7 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
   "affiliation": { "@type": "Organization", "name": "Center for Neuroscience and Cell Biology (CNC-UC), University of Coimbra", "url": "https://www.cnc.uc.pt/" },
   "alumniOf": { "@type": "CollegeOrUniversity", "name": "University of Coimbra" },
   "url": "https://hsscodes.github.io/",
+  "image": "https://hsscodes.github.io/assets/portrait.jpg",
   "identifier": { "@type": "PropertyValue", "propertyID": "ORCID", "value": "0009-0006-7108-125X" },
   "sameAs": [
     "https://scholar.google.com/citations?user=NweJgt8AAAAJ",
@@ -814,6 +880,64 @@ html.chalked .status::before { width: 11px; height: 11px; border-radius: 0; back
   if (window.ResizeObserver) { var ro = new ResizeObserver(function () { drawAll(); }); chalkCanvases.forEach(function (c) { ro.observe(c); }); }
   else window.addEventListener("resize", drawAll);
   drawAll();
+
+  /* Arrivals: each fires once as its element comes up the screen, and gives the plain text back afterwards */
+  (function () {
+    var name = document.getElementById("name"), settled = 0;
+    if (name) name.addEventListener("animationend", function () { if (++settled === name.querySelectorAll(".line").length) name.classList.add("set"); });
+    var lineEls = Array.prototype.slice.call(document.querySelectorAll("[data-lines]"));
+    var targets = Array.prototype.slice.call(document.querySelectorAll("[data-rise], .track, .plate"));
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      targets.forEach(function (el) { el.classList.add("is-in"); });
+      return;
+    }
+    function restore(el) { el.textContent = el.getAttribute("data-text"); el.classList.remove("is-split", "is-in"); }
+    function split(el) {
+      var text = el.textContent.trim().replace(/\s+/g, " ");
+      el.setAttribute("data-text", text);
+      el.textContent = "";
+      var words = text.split(" ").map(function (w) {
+        var s = document.createElement("span");
+        s.style.display = "inline-block"; s.textContent = w;
+        el.appendChild(s); el.appendChild(document.createTextNode(" "));
+        return s;
+      });
+      var lines = [];
+      words.forEach(function (w) {
+        var last = lines[lines.length - 1];
+        if (last && Math.abs(last.top - w.offsetTop) < 4) last.words.push(w.textContent);
+        else lines.push({ top: w.offsetTop, words: [w.textContent] });
+      });
+      el.textContent = "";
+      lines.forEach(function (line, i) {
+        var mask = document.createElement("span"), inner = document.createElement("span");
+        mask.className = "line"; inner.style.setProperty("--i", i); inner.textContent = line.words.join(" ");
+        mask.appendChild(inner); el.appendChild(mask); el.appendChild(document.createTextNode(" "));
+      });
+      el.classList.add("is-split");
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        e.target.classList.add("is-in");
+        if (e.target.classList.contains("is-split")) {
+          var spans = e.target.querySelectorAll(".line > span");
+          var last = spans[spans.length - 1];
+          if (last) last.addEventListener("transitionend", function () { restore(e.target); }, { once: true });
+        }
+      });
+    }, { rootMargin: "0px 0px -12% 0px" });
+    targets.forEach(function (el) { io.observe(el); });
+    function go() { lineEls.forEach(function (el) { split(el); io.observe(el); }); }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(go); else go();
+    var width = innerWidth;
+    addEventListener("resize", function () {
+      if (innerWidth === width) return;
+      width = innerWidth;
+      lineEls.forEach(function (el) { if (el.classList.contains("is-split") && !el.classList.contains("is-in")) { io.unobserve(el); restore(el); } });
+    });
+  })();
 })();
 </script>
 
@@ -1160,29 +1284,47 @@ const scenes = narrow ? {
 } : {
   hero:    { anchor: "center", off: [-8.4, 0.5, 35], look: [-9, 0, 0], spin: 0.05, spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, mask: 1 },
   synapse: { anchor: "spine", off: [-2.2, 0.8, 8.2], look: [-2.2, 0.5, 0], spin: 0.0, spine: 1, nuc: 0, night: 0, opacity: 1, pulse: 0.3, mask: 1 },
-  nucleus: { anchor: "soma", off: [-1.0, 0.2, 4.2], look: [-1.0, 0.12, 0], spin: 0.0, spine: 0, nuc: 1, night: 1, opacity: 0, pulse: 0, mask: 0 },
-  far:     { anchor: "center", off: [-14, 1, 50], look: [-16, 0, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 0 },
-  after:   { anchor: "center", off: [-14, 1, 50], look: [-16, 0, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 0 },
+  nucleus: { anchor: "soma", off: [-1.0, 0.2, 4.2], look: [-1.0, 0.12, 0], spin: 0.0, spine: 0, nuc: 1, night: 1, opacity: 0, pulse: 0, mask: 1 },
+  far:     { anchor: "center", off: [-14, 1, 50], look: [-16, 0, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 1 },
+  after:   { anchor: "center", off: [-14, 1, 50], look: [-16, 0, 0], spin: 0.04, spine: 0, nuc: 0, night: 0, opacity: 0, pulse: 0.5, mask: 1 },
   end:     { anchor: "center", off: [-8.4, 0.5, 35], look: [-9, 0, 0], spin: 0.05, spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, mask: 1 }
 };
 const sections = Array.from(document.querySelectorAll("[data-scene]"));
-let target = scenes.hero, sceneName = "hero";
-function pickScene() {
-  let pick = "hero";
-  for (const s of sections) {
-    const at = innerHeight * (narrow && s.classList.contains("beat") ? 0.85 : 0.5);
-    if (s.getBoundingClientRect().top <= at) pick = s.dataset.scene;
-  }
-  if (pick !== sceneName) {
-    sceneName = pick; target = scenes[pick] || scenes.hero;
-    document.documentElement.classList.toggle("lights-off", pick === "nucleus");
-  }
+const SCALARS = ["spine", "nuc", "night", "opacity", "pulse", "spin", "mask"];
+const blend = { pos: new THREE.Vector3(), look: new THREE.Vector3() };
+for (const n of SCALARS) blend[n] = scenes.hero[n];
+const tmpA = new THREE.Vector3(), tmpP = new THREE.Vector3(), tmpL = new THREE.Vector3();
+function sceneInto(sc, outPos, outLook) {
+  if (sc.anchor === "soma") tmpA.copy(somaPos); else if (sc.anchor === "spine") tmpA.copy(spinePos); else tmpA.set(0, 0, 0);
+  neuron.localToWorld(tmpA);
+  outPos.set(sc.off[0], sc.off[1], sc.off[2]).add(tmpA);
+  outLook.set(sc.look[0], sc.look[1], sc.look[2]).add(tmpA);
 }
-addEventListener("scroll", pickScene, { passive: true });
+/* A section's scene takes over as its top travels from 95% to 50% of the screen (60% on a phone), so the
+   camera moves with the scroll itself rather than jumping at a threshold. */
+function blendScenes() {
+  const vh = innerHeight, enter = vh * 0.95, full = vh * (narrow ? 0.6 : 0.5);
+  sections.forEach((s, i) => {
+    const sc = scenes[s.dataset.scene] || scenes.hero;
+    let a = 1;
+    if (i > 0) {
+      const x = Math.min(1, Math.max(0, (enter - s.getBoundingClientRect().top) / (enter - full)));
+      a = x * x * (3 - 2 * x);
+    }
+    if (a <= 0) return;
+    sceneInto(sc, tmpP, tmpL);
+    if (a >= 1) { blend.pos.copy(tmpP); blend.look.copy(tmpL); for (const n of SCALARS) blend[n] = sc[n]; }
+    else { blend.pos.lerp(tmpP, a); blend.look.lerp(tmpL, a); for (const n of SCALARS) blend[n] += (sc[n] - blend[n]) * a; }
+  });
+}
+/* The lights are one moment rather than a blend: once the nucleus beat holds the screen the room goes dark on
+   a short clock of its own, so the page is never left halfway between paper and night */
+let darkWant = false, darkP = 0;
+function setDark(v) { darkWant = v; document.documentElement.classList.toggle("lights-off", v); }
 
-const live = { pos: new THREE.Vector3(...scenes.hero.off), look: new THREE.Vector3(...scenes.hero.look), spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, spin: 0.05, mask: scenes.hero.mask };
+const live ={ pos: new THREE.Vector3(...scenes.hero.off), look: new THREE.Vector3(...scenes.hero.look), spine: 0, nuc: 0, night: 0, opacity: 1, pulse: 1, spin: 0.05, mask: scenes.hero.mask };
 camera.position.copy(live.pos);
-const anchor = new THREE.Vector3(), wantPos = new THREE.Vector3(), wantLook = new THREE.Vector3();
+const wantPos = new THREE.Vector3(), wantLook = new THREE.Vector3();
 let mx = 0, my = 0, spinVel = 0, dragX = null;
 addEventListener("pointermove", (e) => { mx = (e.clientX / innerWidth) * 2 - 1; my = (e.clientY / innerHeight) * 2 - 1; }, { passive: true });
 const hero = document.querySelector(".hero");
@@ -1208,7 +1350,6 @@ let ready = false;
   const label = document.getElementById("neuron-label");
   if (label) label.textContent = info.label;
   ready = true;
-  pickScene();
 })();
 
 const clock = new THREE.Clock();
@@ -1218,16 +1359,20 @@ function frame() {
   if (document.hidden) return;
   const dt = Math.min(clock.getDelta(), 0.05);
   if (!reduce) t += dt;
-  const k = reduce ? 1 : 1 - Math.exp(-dt * 2.2);
-  for (const name of ["spine", "nuc", "night", "opacity", "pulse", "spin", "mask"]) live[name] += (target[name] - live[name]) * k;
+  blendScenes();
+  const k = reduce ? 1 : 1 - Math.exp(-dt * 7);
+  for (const name of SCALARS) if (name !== "night" && name !== "nuc") live[name] += (blend[name] - live[name]) * k;
+  if (!darkWant && blend.night > 0.55) setDark(true); else if (darkWant && blend.night < 0.45) setDark(false);
+  darkP = reduce ? (darkWant ? 1 : 0) : Math.min(1, Math.max(0, darkP + (darkWant ? dt : -dt) / 0.8));
+  live.night = darkP * darkP * (3 - 2 * darkP);
+  const q = Math.min(1, Math.max(0, (darkP - 0.3) / 0.7));
+  live.nuc = q * q * (3 - 2 * q);
   if (ready) fade = reduce ? 1 : Math.min(1, fade + dt * 0.7);
   if (!reduce) neuron.rotation.y += (live.spin + spinVel) * dt;
   spinVel *= Math.pow(0.04, dt);
   if (!reduce) nucleus.rotation.y += dt * 0.12 * live.nuc;
-  if (target.anchor === "soma") anchor.copy(somaPos); else if (target.anchor === "spine") anchor.copy(spinePos); else anchor.set(0, 0, 0);
-  neuron.localToWorld(anchor);
-  wantLook.set(target.look[0], target.look[1], target.look[2]).add(anchor);
-  wantPos.set(target.off[0], target.off[1], target.off[2]).add(anchor);
+  wantLook.copy(blend.look);
+  wantPos.copy(blend.pos);
   if (!reduce) { wantPos.x += mx * 0.8 * (1 - live.nuc); wantPos.y += -my * 0.5 * (1 - live.nuc); }
   live.pos.lerp(wantPos, k); live.look.lerp(wantLook, k);
   camera.position.copy(live.pos); camera.lookAt(live.look);
